@@ -12,21 +12,27 @@ jobs:
     steps:
       #- name: Automatic Releases
       #  uses: marvinpinto/action-automatic-releases@latest
+      - id: get_version
+        uses: battila7/get-version-action@v2
       - name: Check out repository code
         uses: actions/checkout@v2
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - name: Archive Release
-        env: 
-          DB_URL: ${{ github.workspace }}
+      - name: Archive Release in ZIP
         uses: thedoctor0/zip-release@master
         with:
           echo: DB_URL
           filename: 'release.zip'
-          #directory: DB_URL
           exclusions: '*.git* /*node_modules/* .editorconfig'
+      - name: Archive Release in Tarball
+        uses: thedoctor0/zip-release@master
+        with:
+          echo: DB_URL
+          filename: 'release.tar.gz'
+          exclusions: '*.git* /*node_modules/* .editorconfig'
+          type: tar
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          tag: "release"
-          artifacts: "release.zip"
+          tag: "release-${{ steps.get_version.outputs.version }}"
+          artifacts: "release.zip,release.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
