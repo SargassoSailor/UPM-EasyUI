@@ -14,5 +14,12 @@
     "name": "Chris Ashtear",
     "email": "chrisashtear@gmail.com",
     "url": "https://chrisashtear.itch.io"
-  }
+  },
+  "samples": [
+        {
+            "displayName": "UI Components",
+            "description": "Contains sample prefab menu components such as buttons",
+            "path": "Samples~/"
+        }
+    ]
 }

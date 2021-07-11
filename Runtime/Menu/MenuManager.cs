@@ -149,7 +149,7 @@ public class MenuManager : MonoBehaviour
 
         if(targetPanel != null)
         {
-            changeMenu(targetPanel, ProjectSettings.data.menuCancel);
+            changeMenu(targetPanel, ProjectSettings.Data.menuCancel);
         }
         
     }
