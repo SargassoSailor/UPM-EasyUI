@@ -9,11 +9,12 @@ jobs:
       #- name: Automatic Releases
       #  uses: marvinpinto/action-automatic-releases@latest
       - name: Archive Release
+        env: 
+          DB_URL: ${{ github.workspace }}/
         uses: thedoctor0/zip-release@master
         with:
           filename: 'release.zip'
-          path: '/'
-          directory: '/'
+          directory: DB_URL
           #exclusions: '*.git* /*node_modules/* .editorconfig'
       - name: Upload Release
         uses: ncipollo/release-action@v1
