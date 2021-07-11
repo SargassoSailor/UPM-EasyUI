@@ -1,0 +1,30 @@
+name: Release Actions
+on:
+  push:
+    branches: "master"
+    tags:
+      - '*'
+jobs:
+  pre-release:
+    name: "Pre-Release"
+    runs-on: ubuntu-latest
+    steps:
+      #- name: Automatic Releases
+      #  uses: marvinpinto/action-automatic-releases@latest
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - name: Archive Release
+        env: 
+          DB_URL: ${{ github.workspace }}
+        uses: thedoctor0/zip-release@master
+        with:
+          echo: DB_URL
+          filename: 'release.zip'
+          #directory: DB_URL
+          exclusions: '*.git* /*node_modules/* .editorconfig'
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "release.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
