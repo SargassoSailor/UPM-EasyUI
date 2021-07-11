@@ -23,16 +23,16 @@ jobs:
           echo: DB_URL
           filename: 'release.zip'
           exclusions: '*.git* /*node_modules/* .editorconfig'
-      - name: Archive Release in Tarball
-        uses: thedoctor0/zip-release@master
-        with:
-          echo: DB_URL
-          filename: 'release.tar.gz'
-          exclusions: '.gitignore'
-          type: tar
+      #- name: Archive Release in Tarball
+     #   uses: thedoctor0/zip-release@master
+      ##  with:
+       #   echo: DB_URL
+        #  filename: 'release.tar.gz'
+       #   exclusions: '.gitignore'
+       #   type: tar
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
           tag: "release-${{ steps.get_version.outputs.version }}"
-          artifacts: "release.zip,release.tar.gz"
+          artifacts: "release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
