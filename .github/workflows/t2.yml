@@ -10,7 +10,7 @@ jobs:
       #  uses: marvinpinto/action-automatic-releases@latest
       - name: Archive Release
         env: 
-          DB_URL: ${{ github.workspace }/
+          DB_URL: ${{ github.workspace }}
         uses: thedoctor0/zip-release@master
         with:
           echo: DB_URL
