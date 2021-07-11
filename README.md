@@ -1,1 +1,1 @@
-Easy UI
+Easy UI 2
