@@ -28,7 +28,7 @@ jobs:
         with:
           echo: DB_URL
           filename: 'release.tar.gz'
-          exclusions: '*.git* /*node_modules/* .editorconfig'
+          exclusions: '.gitignore'
           type: tar
       - name: Upload Release
         uses: ncipollo/release-action@v1
