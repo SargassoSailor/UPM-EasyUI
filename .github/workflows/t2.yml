@@ -1,6 +1,9 @@
 name: Release Actions
 on:
   push:
+    branches: "master"
+    tags:
+      - '*'
 jobs:
   pre-release:
     name: "Pre-Release"
