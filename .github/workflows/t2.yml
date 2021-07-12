@@ -1,7 +1,8 @@
 name: Release Actions
 on:
   push:
-    branches: "master"
+    branches: 
+      - "main"
     tags:
       - '*'
 jobs:
@@ -13,18 +14,48 @@ jobs:
       #  uses: marvinpinto/action-automatic-releases@latest
       - name: Check out repository code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Git Semantic Version
+        id: version
+        uses: PaulHatch/semantic-version@v4.0.2
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+          # Optional path to check for changes. If any changes are detected in the path the
+          # 'changed' output will true. Enter multiple paths separated by spaces.
+          #change_path: "src/my-service"
+          # Named version, will be used as suffix for name version tag
+          #namespace: project-b
+          # Indicate whether short tags like 'v1' should be supported. If false only full
+          # tags like 'v1.0.0' will be recognized.
+          short_tags: true
+          # If this is set to true, *every* commit will be treated as a new version.
+          bump_each_commit: true
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - name: Archive Release
-        env: 
-          DB_URL: ${{ github.workspace }}
+      - name: Archive Release in ZIP
         uses: thedoctor0/zip-release@master
         with:
           echo: DB_URL
           filename: 'release.zip'
-          #directory: DB_URL
           exclusions: '*.git* /*node_modules/* .editorconfig'
+      #- name: Archive Release in Tarball
+     #   uses: thedoctor0/zip-release@master
+      ##  with:
+       #   echo: DB_URL
+        #  filename: 'release.tar.gz'
+       #   exclusions: '.gitignore'
+       #   type: tar
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
+          tag: "release-${{ steps.version.outputs.version }}"
           artifacts: "release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
