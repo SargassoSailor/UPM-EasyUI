@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using EUI;
 
 #if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ButtonProps))]

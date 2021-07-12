@@ -6,6 +6,7 @@ using System;
 using Unity;
 using UnityEngine.Events;
 using UnityEditor;
+using EUI;
 
 public enum buttonFunction { changeMenu, startGame, Quit, setPref,Custom,GoBack , OpenWeb, Continue };
 
