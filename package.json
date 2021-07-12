@@ -1,8 +1,8 @@
 {
   "name": "com.chrisash.eui",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "displayName": "EasyUI Basic",
-  "description": "This is an example package",
+  "description": "a small bit of code to generate buttons with different events. Makes it easier to create menus.",
   "unity": "2020.1",
   "unityRelease": "0b5",
   "dependencies": {},
