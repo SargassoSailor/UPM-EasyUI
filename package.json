@@ -5,7 +5,7 @@
   "description": "a small bit of code to generate buttons with different events. Makes it easier to create menus.",
   "unity": "2020.1",
   "unityRelease": "0b5",
-  "dependencies": {},
+  "dependencies": { "com.unity.textmeshpro": "3.0.6" },
  "keywords": [
     "ui",
     "editor"

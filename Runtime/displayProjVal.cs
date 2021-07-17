@@ -26,11 +26,11 @@ public class displayProjVal : MonoBehaviour
     {
         if(txt != null)
         {
-            txt.text = ProjectSettings.returnStr(var).ToString();
+            txt.text = ProjectSettings.returnStr(var);
         }
         if(txtmesh != null)
         {
-            txtmesh.text = ProjectSettings.returnStr(var).ToString();
+            txtmesh.text = ProjectSettings.returnStr(var);
         }
             
         this.enabled = false;

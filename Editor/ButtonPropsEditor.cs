@@ -168,7 +168,7 @@ public class ButtonDrawer : PropertyDrawer
         fields.AddProp(property, "AC", "Custom Sound");
         SerializedProperty p = property.FindPropertyRelative("onPress");
 
-        if (p.intValue == 0 || p.intValue == 3 || p.intValue == 6)
+        if (p.intValue == 0 || p.intValue == 3 || p.intValue == 6 || p.intValue == 8)
         {
             string optName = "Option Field";
             switch (p.intValue)
@@ -181,6 +181,9 @@ public class ButtonDrawer : PropertyDrawer
                     break;
                 case 6:
                     optName = "URL";
+                    break;
+                case 8:
+                    optName = "Panel Name";
                     break;
             }
             fields.AddProp(property, "argument", optName);

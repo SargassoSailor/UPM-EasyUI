@@ -117,7 +117,7 @@ namespace EUI
 
         }
 
-        public void changeMenu(string panel, string pressSound = "")
+        public void changeMenu(string panel, string pressSound = "",bool modalMenu = false)
         {
             if (pressSound == "")
             {
@@ -125,8 +125,15 @@ namespace EUI
             }
             ProjectSettings.data.PlaySound(pressSound);
             prevPanel = currentPanel;
-
-            panels.hidePanel(currentPanel, true);
+            if (!modalMenu)
+            {
+                panels.hidePanel(currentPanel, true);
+            }
+            else
+            {
+                //show modal bg.
+            }
+            
             panels.showPanel(panel, true);
             currentPanel = panel;
         }
@@ -175,8 +182,8 @@ namespace EUI
             audio = audios[0];
             music = audios[1];
 
-            audio.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("sfxVol"));
-            music.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("musicVol"));
+            //audio.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("sfxVol"));
+            //music.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("musicVol"));
 
 
             //use an event to change music after pdata is loaded?

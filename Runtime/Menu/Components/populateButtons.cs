@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using UnityEditor;
 using EUI;
 
-public enum buttonFunction { changeMenu, startGame, Quit, setPref,Custom,GoBack , OpenWeb, Continue };
+public enum buttonFunction { changeMenu, startGame, Quit, setPref,Custom,GoBack , OpenWeb, Continue, popupMenu };
 
 // Custom serializable class
 [Serializable]
@@ -118,7 +118,10 @@ public class populateButtons : MonoBehaviour
                 button.onClick.AddListener(() => MenuManager.returnInstance().openWeb(props.argument));
                 break;
 
-
+            case buttonFunction.popupMenu:
+                button.onClick.AddListener(() => MenuManager.ins.changeMenu(props.argument,"",true));
+                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(props.AC.audioName));
+                break;
         }
 
         if (props.AC.audioName != "")
@@ -152,6 +155,7 @@ public class populateButtons : MonoBehaviour
     void generateButtons()
     {
         bool selected = false;
+        if (prefab == null) { prefab = ProjectSettings.data?.defaultButton; }
         foreach (ButtonProps b in props)
         {
             Button btn = createButton(b, prefab, true, layoutGroup);
