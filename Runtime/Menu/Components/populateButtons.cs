@@ -7,7 +7,7 @@ using Unity;
 using UnityEngine.Events;
 using UnityEditor;
 using EUI;
-
+//TODO: should have a 'EasyButton' script that can be manually put in that takes props.
 public enum buttonFunction { changeMenu, startGame, Quit, setPref,Custom,GoBack , OpenWeb, Continue, popupMenu };
 
 // Custom serializable class
@@ -137,6 +137,7 @@ public class populateButtons : MonoBehaviour
         generateButtons();
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         foreach (Transform child in transform)
@@ -151,7 +152,7 @@ public class populateButtons : MonoBehaviour
         }
         generateButtons();
     }
-
+#endif
     void generateButtons()
     {
         bool selected = false;

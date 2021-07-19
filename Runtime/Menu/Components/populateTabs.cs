@@ -112,7 +112,7 @@ public class populateTabs : MonoBehaviour
         GUIutil.clearChildren(contentContainer.transform, "none", true);
         generateContent();
     }
-
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (tabContainer == null || contentContainer == null) { return; }
@@ -138,6 +138,7 @@ public class populateTabs : MonoBehaviour
         }
         generateContent();
     }
+#endif
 
     void generateContent()
     {
