@@ -21,5 +21,8 @@
             "description": "Contains sample prefab menu components such as buttons",
             "path": "Samples~/"
         }
-    ]
+    ],
+  "scripts": {
+    "version": "auto-changelog -p && git add CHANGELOG.md"
+  }
 }
