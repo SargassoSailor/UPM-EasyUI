@@ -1,12 +1,14 @@
 {
   "name": "com.chrisash.eui",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "displayName": "EasyUI Basic",
   "description": "a small bit of code to generate buttons with different events. Makes it easier to create menus.",
   "unity": "2020.1",
   "unityRelease": "0b5",
-  "dependencies": { "com.unity.textmeshpro": "3.0.6" },
- "keywords": [
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  },
+  "keywords": [
     "ui",
     "editor"
   ],
@@ -16,12 +18,12 @@
     "url": "https://chrisashtear.itch.io"
   },
   "samples": [
-        {
-            "displayName": "UI Components",
-            "description": "Contains sample prefab menu components such as buttons",
-            "path": "Samples~/"
-        }
-    ],
+    {
+      "displayName": "UI Components",
+      "description": "Contains sample prefab menu components such as buttons",
+      "path": "Samples~/"
+    }
+  ],
   "scripts": {
     "version": "auto-changelog -p && git add CHANGELOG.md"
   }
