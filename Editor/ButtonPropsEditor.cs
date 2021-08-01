@@ -113,7 +113,6 @@ public class ButtonDrawer : PropertyDrawer
         go.AddComponent<AudioSource>();
         MenuManager m = go.AddComponent<MenuManager>();
         go.AddComponent<DontDestroy>();
-        go.AddComponent<GameManager>();
 
         m.currentPanel = "";
 

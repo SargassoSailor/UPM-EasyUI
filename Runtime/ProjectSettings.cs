@@ -15,7 +15,8 @@ public static class ProjectSettings
         if (data != null) { return data; }
         else
         {
-            data = Resources.LoadAll<ProjectData>("")[0];
+            ProjectData[] dataSettings = Resources.LoadAll<ProjectData>("");
+            if (dataSettings.Length > 0) { data = dataSettings[0]; }
             return data;
         }
     }

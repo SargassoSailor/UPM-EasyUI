@@ -17,8 +17,12 @@ namespace Packages.ChrisAsh.EUI.Editor
             ProjectData data = ProjectSettings.GetData();
             if(data==null)
             {
-                data = new ProjectData();
-                AssetDatabase.CreateAsset(data, "Assets/Resources/ProjectSettings1.asset");
+                bool canCopy = AssetDatabase.CopyAsset("Packages/com.chrisash.eui/DefaultProjectFile/projectData.asset", "Assets/Resources/ProjectSettings1.asset");
+                if (!canCopy) 
+                {
+                    data = new ProjectData();
+                    AssetDatabase.CreateAsset(data, "Assets/Resources/ProjectSettings1.asset"); 
+                }
             }
         }
     }

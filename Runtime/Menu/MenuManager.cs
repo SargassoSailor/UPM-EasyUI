@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
+using UnityEngine.Events;
 
 namespace EUI
 {
@@ -35,7 +36,11 @@ namespace EUI
         public GameObject detailsCard;
         public GameObject selectedItem;
 
+        public UnityEvent startGameEvent;
+        public UnityEvent continueGameEvent;
+
         public bool changeScene = true;
+        public static bool isPaused = false;
 
         private GameObject msgPanel;
         public GameObject returnCurrentPanel()
@@ -243,7 +248,7 @@ namespace EUI
 
         public static void statusMessage(string message, float time = 1)
         {
-            GameManager.ins.setUIVal("message", message);
+            //GameManager.ins.setUIVal("message", message);
             ins.panels.showPanel("MessagePanel", false);
             ins.msgPanel = ins.panels.returnPanel("MessagePanel");
             ins.Invoke("endStatusMessage", time);
@@ -282,9 +287,7 @@ namespace EUI
 
         public void doLoad()
         {
-            GameManager.ins.Load();
-            GameManager.ins.gameStart();
-
+            continueGameEvent?.Invoke();
         }
 
         public void doStart()
@@ -300,7 +303,7 @@ namespace EUI
 
             changeMusic(ProjectSettings.data.gameMusic);
             MenuManager.gameRunning = true;
-            GameManager.ins.gameStart();
+            startGameEvent?.Invoke();
         }
 
         public void StopGameplay()
@@ -357,7 +360,7 @@ namespace EUI
 
         public void DoPause(bool showPauseMenu = false)
         {
-            GameManager.isPaused = true;
+            MenuManager.isPaused = true;
             //Set time.timescale to 0, this will cause animations and physics to stop updating
             Time.timeScale = 0;
             if (showPauseMenu)
@@ -373,7 +376,7 @@ namespace EUI
 
         public void UnPause()
         {
-            GameManager.isPaused = false;
+            MenuManager.isPaused = false;
             //Set time.timescale to 1, this will cause animations and physics to continue updating at regular speed
             Time.timeScale = 1;
             panels.hidePanel(pausePanelName);
