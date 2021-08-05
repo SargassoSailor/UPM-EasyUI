@@ -58,16 +58,6 @@ public static class ObjectToDictionaryHelper
 
 public static class GUIutil
 {
-    public static void DrawUILine(Color color, int thickness = 2, int padding = 10)
-    {
-        Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding + thickness));
-        r.height = thickness;
-        r.y += padding / 2;
-        r.x -= 2;
-        r.width += 6;
-        EditorGUI.DrawRect(r, color);
-    }
-
     public static void matchObjSizeWithParent(GameObject child, GameObject parent)
     {
         RectTransform rectTransform = child.GetComponent<RectTransform>();
@@ -80,15 +70,7 @@ public static class GUIutil
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
     }
 
-    public static Rect doPrefixLabel(ref Rect position, string label, int verticalSpacing = 16)
-    {
-#if UNITY_EDITOR
-        EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), new GUIContent(label));
-#endif
-        position.y += verticalSpacing;
-        position.height -= verticalSpacing;
-        return position;
-    }
+    
 
     public static void SetTimer(Timer t, float delay, ElapsedEventHandler callbackFunc)
     {
