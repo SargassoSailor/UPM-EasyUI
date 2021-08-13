@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class doAnimAndSleep : MonoBehaviour {
+public class doAnimAndSleep : MonoBehaviour
+{
 
     public string animTrigger;
     public float delay;
@@ -11,7 +10,7 @@ public class doAnimAndSleep : MonoBehaviour {
     private AnimationEvent myEvent;
     private static float waitForClipDelay = 0.08f;
 
-	// Use this for initialization
+    // Use this for initialization
 
     public void doAnim()
     {
@@ -20,15 +19,15 @@ public class doAnimAndSleep : MonoBehaviour {
         myEvent.functionName = "myEventFunction";
 
         anim.SetTrigger(animTrigger);
-        
+
         Invoke("setSleep", waitForClipDelay);
 
     }
-	
+
     public void setSleep()// this gets the length of the animation clip and sets the game object to disable itself when it ends.
     {
         AnimatorClipInfo[] currInfo = anim.GetCurrentAnimatorClipInfo(0);
-        if(currInfo.Length < 1)
+        if (currInfo.Length < 1)
         {
             sleepAfterDelay();//no animation
             return;
@@ -43,10 +42,11 @@ public class doAnimAndSleep : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
 }

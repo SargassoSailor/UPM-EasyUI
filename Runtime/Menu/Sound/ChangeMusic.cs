@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using EUI;
 using UnityEngine;
-using EUI;
 
 public class ChangeMusic : MonoBehaviour
 {

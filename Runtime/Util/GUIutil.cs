@@ -1,12 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System.Timers;
 using System.ComponentModel;
-using System;
-using System.Linq;
-using System.Xml.Linq;
+using System.Timers;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 public static class ObjectToDictionaryHelper
@@ -70,15 +66,15 @@ public static class GUIutil
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
     }
 
-    
+
 
     public static void SetTimer(Timer t, float delay, ElapsedEventHandler callbackFunc)
     {
-        if(t != null)
+        if (t != null)
         {
             t.Stop();
         }
-        
+
         // Create a timer with a two second interval.
         t = new System.Timers.Timer(delay);//in ms
                                            // Hook up the Elapsed event for the timer. 
@@ -87,16 +83,16 @@ public static class GUIutil
         t.Enabled = true;
     }
 
-    public static void clearChildren(Transform t,string exception="none",bool immediate=false)
+    public static void clearChildren(Transform t, string exception = "none", bool immediate = false)
     {
         List<GameObject> objs = new List<GameObject>();
         foreach (Transform child in t)
         {
-            if(child.name != exception)
+            if (child.name != exception)
             {
                 objs.Add(child.gameObject);
             }
-            
+
         }
         foreach (GameObject c in objs)
         {

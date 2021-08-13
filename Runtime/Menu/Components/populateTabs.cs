@@ -1,11 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using Unity;
-using UnityEngine.Events;
-using UnityEditor;
 
 //public enum buttonFunction { changeMenu, startGame, Quit, setPref, Custom, GoBack, OpenWeb, Continue };
 
@@ -43,7 +39,7 @@ public class populateTabs : MonoBehaviour
     }
     // Start is called before the first frame update
 
-    public static GameObject createTabPanel(TabProps props,GameObject contentContainer)
+    public static GameObject createTabPanel(TabProps props, GameObject contentContainer)
     {
         GameObject tabObj = Instantiate(props.panelPrefab, contentContainer.transform);
         tabObj.transform.parent = contentContainer.transform;
@@ -52,7 +48,7 @@ public class populateTabs : MonoBehaviour
 
     }
 
-    public static Toggle createTabButton(TabProps props, GameObject buttonObj, GameObject tabContainer, GameObject tabPanel,ToggleGroup group)//associate tab button with tab panel.
+    public static Toggle createTabButton(TabProps props, GameObject buttonObj, GameObject tabContainer, GameObject tabPanel, ToggleGroup group)//associate tab button with tab panel.
     {
         GameObject obj = buttonObj;
         obj = Instantiate(buttonObj, tabContainer.transform);
@@ -101,7 +97,7 @@ public class populateTabs : MonoBehaviour
         //add 2nd event for animation
         if (props.AC.audioName != "")
         {
-           // tog.onValueChanged.AddListener(delegate { ProjectSettings.data.PlaySound(props.AC.audioName); });
+            // tog.onValueChanged.AddListener(delegate { ProjectSettings.data.PlaySound(props.AC.audioName); });
         }
 
         return tog;
@@ -142,11 +138,11 @@ public class populateTabs : MonoBehaviour
 
     void generateContent()
     {
-        if(contentContainer == null || tabContainer == null || tabButtonPrefab == null) { return; }
+        if (contentContainer == null || tabContainer == null || tabButtonPrefab == null) { return; }
 
         foreach (TabProps b in tProps)
         {
-            if(b.panelPrefab == null) { continue; }
+            if (b.panelPrefab == null) { continue; }
             GameObject tabPanel = createTabPanel(b, contentContainer.gameObject);
             if (!b.startSelected) { tabPanel.SetActive(false); }
             Toggle tog = createTabButton(b, tabButtonPrefab, tabContainer, tabPanel, contentContainer);

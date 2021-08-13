@@ -1,14 +1,11 @@
-﻿using System.Collections;
+﻿using EUI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-using Unity;
 using UnityEngine.Events;
-using UnityEditor;
-using EUI;
+using UnityEngine.UI;
 //TODO: should have a 'EasyButton' script that can be manually put in that takes props.
-public enum buttonFunction { changeMenu, startGame, Quit, setPref,Custom,GoBack , OpenWeb, Continue, popupMenu };
+public enum buttonFunction { changeMenu, startGame, Quit, setPref, Custom, GoBack, OpenWeb, Continue, popupMenu };
 
 // Custom serializable class
 [Serializable]
@@ -41,22 +38,22 @@ public class populateButtons : MonoBehaviour
     }
     // Start is called before the first frame update
 
-    public static Button createButton(ButtonProps props, GameObject buttonObj, bool isPrefab = true, GameObject layoutGroup=null)
+    public static Button createButton(ButtonProps props, GameObject buttonObj, bool isPrefab = true, GameObject layoutGroup = null)
     {
         GameObject obj = buttonObj;
-        if(isPrefab)
+        if (isPrefab)
         {
             obj = Instantiate(buttonObj, layoutGroup.transform);
             obj.transform.parent = layoutGroup.transform;
             obj.name = props.name;
-           
+
         }
         Button button = obj.GetComponent<Button>();
         //button.Select();
         obj.AddComponent<UIselectOnEnable>();
 
         Transform label = obj.transform.Find("Label");
-        if(label != null)
+        if (label != null)
         {
             Text t = label.GetComponent<Text>();
             if (t == null)
@@ -77,7 +74,7 @@ public class populateButtons : MonoBehaviour
                 center.GetComponent<Image>().color = props.color;
             }
         }
-        
+
         switch (props.onPress)
         {
             case buttonFunction.changeMenu:
@@ -119,7 +116,7 @@ public class populateButtons : MonoBehaviour
                 break;
 
             case buttonFunction.popupMenu:
-                button.onClick.AddListener(() => MenuManager.ins.changeMenu(props.argument,"",true));
+                button.onClick.AddListener(() => MenuManager.ins.changeMenu(props.argument, "", true));
                 button.onClick.AddListener(() => ProjectSettings.data.PlaySound(props.AC.audioName));
                 break;
         }
@@ -144,7 +141,7 @@ public class populateButtons : MonoBehaviour
         {
             UnityEditor.EditorApplication.delayCall += () =>
             {
-                if(child!=null)
+                if (child != null)
                 {
                     UnityEditor.Undo.DestroyObjectImmediate(child.gameObject);
                 }

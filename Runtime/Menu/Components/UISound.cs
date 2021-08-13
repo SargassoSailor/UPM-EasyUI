@@ -1,10 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using UnityEditor;
-using System.Collections.Generic;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
 
 public class UISound : MonoBehaviour
 {
@@ -19,7 +14,7 @@ public class UISound : MonoBehaviour
         {
             t.onValueChanged.AddListener(delegate { PlaySound(); });
         }
-        
+
         Button b = GetComponent<Button>();
         if (b != null)
         {

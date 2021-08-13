@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public enum AudioType { SFX,BGM };
+public enum AudioType { SFX, BGM };
 public class setAudioLevels : MonoBehaviour
 {
     public AudioMixer mixer;
@@ -21,7 +19,7 @@ public class setAudioLevels : MonoBehaviour
     public void Init()
     {
         slider = GetComponent<Slider>();
-        float val = PlayerPrefs.GetFloat(prefName,1);
+        float val = PlayerPrefs.GetFloat(prefName, 1);
         slider.value = val;
         slider.onValueChanged.AddListener(SetVolume);
 
@@ -32,6 +30,6 @@ public class setAudioLevels : MonoBehaviour
     {
         mixer.SetFloat("volume", Mathf.Log10(val) * 20);
         PlayerPrefs.SetFloat(prefName, val);
-        
+
     }
 }

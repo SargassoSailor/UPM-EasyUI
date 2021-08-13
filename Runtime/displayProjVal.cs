@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.TextCore;
 /// <summary>
 // Display a projectValue in a gui element.
 /// </summary>
@@ -24,15 +22,15 @@ public class displayProjVal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(txt != null)
+        if (txt != null)
         {
             txt.text = ProjectSettings.returnStr(var);
         }
-        if(txtmesh != null)
+        if (txtmesh != null)
         {
             txtmesh.text = ProjectSettings.returnStr(var);
         }
-            
+
         this.enabled = false;
     }
 

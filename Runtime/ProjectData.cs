@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Audio;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.Audio;
 [System.Serializable]
 
 
@@ -43,9 +43,9 @@ public class ProjectData : ScriptableObject
     private void OnValidate()
     {
         audio = new Dictionary<string, AudioClip>();
-        foreach(AudioClip a in audioList)
+        foreach (AudioClip a in audioList)
         {
-            if (a == null || audio.ContainsKey(a.name)){ continue; }
+            if (a == null || audio.ContainsKey(a.name)) { continue; }
             audio.Add(a.name, a);
         }
     }
@@ -58,7 +58,7 @@ public class ProjectData : ScriptableObject
     public void PlaySound(string sound)
     {
         audio.TryGetValue(sound, out AudioClip clip);
-        if(clip!=null)
+        if (clip != null)
         {
             player?.PlayOneShot(clip);
         }
@@ -68,7 +68,7 @@ public class ProjectData : ScriptableObject
     {
         PlaySound(clip.audioName);
     }
-    
+
     public string[] GetSoundList()
     {
         return audio.Keys.ToArray();
