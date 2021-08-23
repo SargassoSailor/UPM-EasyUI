@@ -1,4 +1,4 @@
-<h1>Easy UI Builder</h1>
+<h1>[Easy UI Builder](https://chrisashtear.github.io/EUI.png)</h1>
 
 <h2>Introduction</h2>
 
