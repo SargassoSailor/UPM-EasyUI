@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 //TODO: should have a 'EasyButton' script that can be manually put in that takes props.
-public enum buttonFunction { changeMenu, startGame, Quit, setPref, Custom, GoBack, OpenWeb, Continue, popupMenu };
+public enum buttonFunction { changeMenu, startGame, Quit, setPref, Custom, GoBack, OpenWeb, Continue, popupMenu, stopGame };
 
 // Custom serializable class
 [Serializable]
@@ -18,6 +18,88 @@ public class ButtonProps
     public Color32 txtcolor = Color.black;
     public ProjectSoundClip AC;
     public UnityEvent ev;
+
+    public void InitButton(Button button)
+    {
+        Transform label = button.transform.Find("Label");
+        if (label != null)
+        {
+            Text t = label.GetComponent<Text>();
+            if (t == null)
+            {
+                TMPro.TextMeshProUGUI txtmesh = label.GetComponent<TMPro.TextMeshProUGUI>();
+                txtmesh.text = name;
+                txtmesh.color = txtcolor;
+            }
+            else
+            {
+                t.text = name;
+            }
+
+
+            Transform center = button.transform.Find("ButtonCenter");
+            if (center != null)
+            {
+                center.GetComponent<Image>().color = color;
+            }
+        }
+
+
+        switch (onPress)
+        {
+            case buttonFunction.changeMenu:
+                button.onClick.AddListener(() => MenuManager.ins.changeMenu(argument));
+                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+                break;
+
+            case buttonFunction.GoBack:
+                button.onClick.AddListener(() => MenuManager.ins.goBack());
+                break;
+
+            case buttonFunction.startGame:
+                button.onClick.AddListener(() => MenuManager.ins.startGame());
+                break;
+
+            case buttonFunction.stopGame:
+                button.onClick.AddListener(() => MenuManager.ins.StopGameplay());
+                break;
+
+            case buttonFunction.Continue:
+                button.onClick.AddListener(() => MenuManager.ins.loadGame());
+                break;
+
+            case buttonFunction.Quit:
+                button.onClick.AddListener(() => MenuManager.ins.quitGame());
+                break;
+
+            case buttonFunction.setPref:
+                string[] splitArg = argument.Split(':');
+                button.onClick.AddListener(() => PlayerPrefs.SetString(splitArg[0], splitArg[1]));
+                button.onClick.AddListener(() => MenuManager.ins.processPrefs());
+                break;
+            case buttonFunction.Custom:
+                button.onClick.AddListener(() => ev.Invoke());
+                if (AC == null)
+                {
+                    button.onClick.AddListener(() => ProjectSettings.data.PlaySound(ProjectSettings.data.menuConfirm));
+                }
+                break;
+
+            case buttonFunction.OpenWeb:
+                button.onClick.AddListener(() => MenuManager.returnInstance().openWeb(argument));
+                break;
+
+            case buttonFunction.popupMenu:
+                button.onClick.AddListener(() => MenuManager.ins.changeMenu(argument, "", true));
+                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+                break;
+        }
+
+        if (AC.audioName != "")
+        {
+            button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+        }
+    }
 }
 
 public class populateButtons : MonoBehaviour
@@ -37,7 +119,7 @@ public class populateButtons : MonoBehaviour
         prefab = ProjectSettings.data.defaultButton;
     }
     // Start is called before the first frame update
-
+    //TODO: create monobehaviour that allows for single button props button. 
     public static Button createButton(ButtonProps props, GameObject buttonObj, bool isPrefab = true, GameObject layoutGroup = null)
     {
         GameObject obj = buttonObj;
@@ -52,79 +134,7 @@ public class populateButtons : MonoBehaviour
         //button.Select();
         obj.AddComponent<UIselectOnEnable>();
 
-        Transform label = obj.transform.Find("Label");
-        if (label != null)
-        {
-            Text t = label.GetComponent<Text>();
-            if (t == null)
-            {
-                TMPro.TextMeshProUGUI txtmesh = label.GetComponent<TMPro.TextMeshProUGUI>();
-                txtmesh.text = props.name;
-                txtmesh.color = props.txtcolor;
-            }
-            else
-            {
-                t.text = props.name;
-            }
-
-
-            Transform center = obj.transform.Find("ButtonCenter");
-            if (center != null)
-            {
-                center.GetComponent<Image>().color = props.color;
-            }
-        }
-
-        switch (props.onPress)
-        {
-            case buttonFunction.changeMenu:
-                button.onClick.AddListener(() => MenuManager.ins.changeMenu(props.argument));
-                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(props.AC.audioName));
-                break;
-
-            case buttonFunction.GoBack:
-                button.onClick.AddListener(() => MenuManager.ins.goBack());
-                break;
-
-            case buttonFunction.startGame:
-                button.onClick.AddListener(() => MenuManager.ins.startGame());
-                break;
-
-            case buttonFunction.Continue:
-                button.onClick.AddListener(() => MenuManager.ins.loadGame());
-                break;
-
-            case buttonFunction.Quit:
-                button.onClick.AddListener(() => MenuManager.ins.quitGame());
-                break;
-
-            case buttonFunction.setPref:
-                string[] splitArg = props.argument.Split(':');
-                button.onClick.AddListener(() => PlayerPrefs.SetString(splitArg[0], splitArg[1]));
-                button.onClick.AddListener(() => MenuManager.ins.processPrefs());
-                break;
-            case buttonFunction.Custom:
-                button.onClick.AddListener(() => props.ev.Invoke());
-                if (props.AC == null)
-                {
-                    button.onClick.AddListener(() => ProjectSettings.data.PlaySound(ProjectSettings.data.menuConfirm));
-                }
-                break;
-
-            case buttonFunction.OpenWeb:
-                button.onClick.AddListener(() => MenuManager.returnInstance().openWeb(props.argument));
-                break;
-
-            case buttonFunction.popupMenu:
-                button.onClick.AddListener(() => MenuManager.ins.changeMenu(props.argument, "", true));
-                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(props.AC.audioName));
-                break;
-        }
-
-        if (props.AC.audioName != "")
-        {
-            button.onClick.AddListener(() => ProjectSettings.data.PlaySound(props.AC.audioName));
-        }
+        props.InitButton(button);
 
         return button;
     }

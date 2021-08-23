@@ -174,7 +174,7 @@ namespace EUI
             music.Play();
         }
 
-        public void Start()
+        public void OnEnable()
         {
             AudioSource[] audios = GetComponents<AudioSource>();
 
@@ -238,6 +238,11 @@ namespace EUI
         public static void playSound(string sfxName)
         {
             ProjectSettings.data.PlaySound(sfxName);
+        }
+
+        public static void playMusic(AudioClip clip)
+        {
+            ins.changeMusic(clip);
         }
 
         public static void statusMessage(string message, float time = 1)
