@@ -21,7 +21,7 @@
     {
       "displayName": "UI Components",
       "description": "Contains sample prefab menu components such as buttons",
-      "path": "Samples~/"
+      "path": "Samples/"
     }
   ],
   "scripts": {

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace EUI
 {
+    public delegate void E_callback();
     public class MenuManager : MonoBehaviour
     {
 
@@ -32,11 +33,15 @@ namespace EUI
 
         public UnityEvent startGameEvent;
         public UnityEvent continueGameEvent;
+        public UnityEvent stopGameEvent;
 
         public bool changeScene = true;
         public static bool isPaused = false;
 
         private GameObject msgPanel;
+        private bool runStartEvent = true;
+
+        public FaderControl fader;
         public GameObject returnCurrentPanel()
         {
             return panels.returnPanel(currentPanel);
@@ -67,7 +72,7 @@ namespace EUI
                 MenuManager.ins = this;
             }
 
-            string[] hideInMenu = { "GamePanel", "GameOver" };
+            /*string[] hideInMenu = { "GamePanel", "GameOver" };
             string[] hideInGame = { "GameOver" };
             string[] showInGame = { "GamePanel" };
             string[] showInMenu = { "MenuBG" };
@@ -112,7 +117,7 @@ namespace EUI
                         panels.showPanel(s);
                     }
                     break;
-            }
+            }*/
 
         }
 
@@ -200,6 +205,7 @@ namespace EUI
                 pausePanelName = pausePanel.name;
             }
             ProjectSettings.data.player = GetComponent<AudioSource>();
+            fader = panels.returnPanel("Fade").GetComponent<FaderControl>();
         }
 
 
@@ -263,19 +269,19 @@ namespace EUI
             obj.SetActive(!obj.activeSelf);
         }
 
-        public static void startGame(string x)
+        public static void StartGame(bool runStartGameEvents = true)
         {
-            ins.startGame();
+            ins.startGame(runStartGameEvents);
         }
 
-        public void startGame()
+        public void startGame(bool runStartGameEvents = true)
         {
+            runStartEvent = runStartGameEvents;
             ProjectSettings.data.PlaySound(ProjectSettings.data.gameStart);
             panels.hidePanel(currentPanel, true);
-            Animator fader = panels.returnPanel("Fade").GetComponent<Animator>();
-            fader.SetTrigger("fade");
-            Invoke("doStart", 1.5f);
+            fader.FadeOut(doStart);
             currentPanel = "GamePanel";
+
         }
 
         public void loadGame()
@@ -302,19 +308,23 @@ namespace EUI
 
             changeMusic(ProjectSettings.data.gameMusic);
             MenuManager.gameRunning = true;
-            startGameEvent?.Invoke();
+            if(runStartEvent)
+            {
+                startGameEvent?.Invoke();
+            }
+            fader.FadeIn(null);
         }
 
         public void StopGameplay()
         {
             gameRunning = false;
-            Animator fader = panels.returnPanel("Fade").GetComponent<Animator>();
-            fader.SetTrigger("fade");
-            Invoke("doStop", 1.5f);
+            Time.timeScale = 1;
+            fader.FadeOut(doStop);
         }
 
         public void doStop()
         {
+            stopGameEvent?.Invoke();
             if (changeScene)
             {
                 SceneManager.LoadScene(0);
@@ -323,10 +333,12 @@ namespace EUI
             {
                 OnLevelWasLoaded(0);
             }
-
+            changeMenu("MenuPanel");
+            
             changeMusic(ProjectSettings.data.menuMusic);
-            panels.showPanel("MenuPanel", true);
-            currentPanel = "MenuPanel";
+            //panels.showPanel("MenuPanel", true);
+            //currentPanel = "MenuPanel";
+            fader.FadeIn(null);
         }
 
         public void openWeb(string address)
