@@ -74,6 +74,7 @@ public class ShowPanels : MonoBehaviour
             }
             else
             {
+                Debug.LogWarning("MenuManager- no doAnimAndSleep found");
                 setPanel(panelName, false, false);
             }
 

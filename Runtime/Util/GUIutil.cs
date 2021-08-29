@@ -54,6 +54,29 @@ public static class ObjectToDictionaryHelper
 
 public static class GUIutil
 {
+    public static Transform RecursiveFindChild(Transform parent, string childName)
+    {
+        Transform child = null;
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            child = parent.GetChild(i);
+            if (child.name == childName)
+            {
+                break;
+            }
+            else
+            {
+                child = RecursiveFindChild(child, childName);
+                if (child != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        return child;
+    }
+
     public static void matchObjSizeWithParent(GameObject child, GameObject parent)
     {
         RectTransform rectTransform = child.GetComponent<RectTransform>();

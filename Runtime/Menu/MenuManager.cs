@@ -129,7 +129,7 @@ namespace EUI
             }
             ProjectSettings.data.PlaySound(pressSound);
             prevPanel = currentPanel;
-            if (!modalMenu)
+            if (!modalMenu && currentPanel!=panel)
             {
                 panels.hidePanel(currentPanel, true);
             }
