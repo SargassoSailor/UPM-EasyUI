@@ -42,6 +42,8 @@ namespace EUI
         private bool runStartEvent = true;
 
         public FaderControl fader;
+
+        public bool HandleMusic = true;
         public GameObject returnCurrentPanel()
         {
             return panels.returnPanel(currentPanel);
@@ -246,9 +248,12 @@ namespace EUI
             ProjectSettings.data.PlaySound(sfxName);
         }
 
-        public static void playMusic(AudioClip clip)
+        public static void playMusic(AudioClip clip, bool restartMusicIfSame=false)
         {
-            ins.changeMusic(clip);
+            if(ins.music.clip != clip || restartMusicIfSame)
+            {
+                ins.changeMusic(clip);
+            }
         }
 
         public static void statusMessage(string message, float time = 1)
@@ -306,7 +311,11 @@ namespace EUI
                 OnLevelWasLoaded(1);
             }
 
-            changeMusic(ProjectSettings.data.gameMusic);
+            if(HandleMusic)
+            {
+                changeMusic(ProjectSettings.data.gameMusic);
+            }
+            
             MenuManager.gameRunning = true;
             if(runStartEvent)
             {
@@ -335,7 +344,11 @@ namespace EUI
             }
             changeMenu("MenuPanel");
             
-            changeMusic(ProjectSettings.data.menuMusic);
+            if(HandleMusic)
+            {
+                changeMusic(ProjectSettings.data.menuMusic);
+            }
+            
             //panels.showPanel("MenuPanel", true);
             //currentPanel = "MenuPanel";
             fader.FadeIn(null);
