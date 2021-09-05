@@ -11,7 +11,8 @@ public static class ProjectSettings
         else
         {
             ProjectData[] dataSettings = Resources.LoadAll<ProjectData>("");
-            if (dataSettings.Length > 0) { data = dataSettings[0]; }
+            if (dataSettings.Length > 0) { data = dataSettings[0]; Debug.Log("Loaded ProjectData:" + data.ToString()); }
+            else { Debug.LogError("Cannot find ProjectData"); }
             return data;
         }
     }

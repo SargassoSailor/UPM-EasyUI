@@ -51,7 +51,7 @@ namespace EUI
         public void quitGame()
         {
             Invoke("exit", 1);
-            ProjectSettings.data.PlaySound(ProjectSettings.data.menuCancel);
+            ProjectSettings.Data.PlaySound(ProjectSettings.data.menuCancel);
             panels.hidePanel(currentPanel, true);
         }
 
@@ -127,9 +127,9 @@ namespace EUI
         {
             if (pressSound == "")
             {
-                pressSound = ProjectSettings.data.menuConfirm;
+                pressSound = ProjectSettings.Data.menuConfirm;
             }
-            ProjectSettings.data.PlaySound(pressSound);
+            ProjectSettings.Data.PlaySound(pressSound);
             prevPanel = currentPanel;
             if (!modalMenu && currentPanel!=panel)
             {
@@ -206,7 +206,8 @@ namespace EUI
             {
                 pausePanelName = pausePanel.name;
             }
-            ProjectSettings.data.player = GetComponent<AudioSource>();
+            ProjectData d = ProjectSettings.GetData();
+            ProjectSettings.Data.player = GetComponent<AudioSource>();
             fader = panels.returnPanel("Fade").GetComponent<FaderControl>();
         }
 
@@ -245,7 +246,7 @@ namespace EUI
 
         public static void playSound(string sfxName)
         {
-            ProjectSettings.data.PlaySound(sfxName);
+            ProjectSettings.Data.PlaySound(sfxName);
         }
 
         public static void playMusic(AudioClip clip, bool restartMusicIfSame=false)
@@ -282,7 +283,8 @@ namespace EUI
         public void startGame(bool runStartGameEvents = true)
         {
             runStartEvent = runStartGameEvents;
-            ProjectSettings.data.PlaySound(ProjectSettings.data.gameStart);
+            ProjectSettings.Data.PlaySound(ProjectSettings.data.gameStart);
+            //error in webgl here
             panels.hidePanel(currentPanel, true);
             fader.FadeOut(doStart);
             currentPanel = "GamePanel";
@@ -356,7 +358,7 @@ namespace EUI
 
         public void openWeb(string address)
         {
-            ProjectSettings.data.PlaySound(ProjectSettings.data.menuConfirm);
+            ProjectSettings.Data.PlaySound(ProjectSettings.data.menuConfirm);
 #if !UNITY_WEBGL
             Application.OpenURL(address);
 #endif

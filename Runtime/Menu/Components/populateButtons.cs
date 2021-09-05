@@ -49,7 +49,7 @@ public class ButtonProps
         {
             case buttonFunction.changeMenu:
                 button.onClick.AddListener(() => MenuManager.ins.changeMenu(argument));
-                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+                button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(AC.audioName));
                 break;
 
             case buttonFunction.GoBack:
@@ -81,7 +81,7 @@ public class ButtonProps
                 button.onClick.AddListener(() => ev.Invoke());
                 if (AC == null)
                 {
-                    button.onClick.AddListener(() => ProjectSettings.data.PlaySound(ProjectSettings.data.menuConfirm));
+                    button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(ProjectSettings.data.menuConfirm));
                 }
                 break;
 
@@ -91,13 +91,13 @@ public class ButtonProps
 
             case buttonFunction.popupMenu:
                 button.onClick.AddListener(() => MenuManager.ins.changeMenu(argument, "", true));
-                button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+                button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(AC.audioName));
                 break;
         }
 
         if (AC.audioName != "")
         {
-            button.onClick.AddListener(() => ProjectSettings.data.PlaySound(AC.audioName));
+            button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(AC.audioName));
         }
     }
 }

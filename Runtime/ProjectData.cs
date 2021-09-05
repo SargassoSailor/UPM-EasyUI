@@ -42,6 +42,11 @@ public class ProjectData : ScriptableObject
 
     private void OnValidate()
     {
+        SetupAudioList();
+    }
+
+    private void SetupAudioList()
+    {
         audio = new Dictionary<string, AudioClip>();
         foreach (AudioClip a in audioList)
         {
@@ -53,6 +58,7 @@ public class ProjectData : ScriptableObject
     private void OnEnable()
     {
         ProjectSettings.data = this;
+        SetupAudioList();
     }
 
     public void PlaySound(string sound)
