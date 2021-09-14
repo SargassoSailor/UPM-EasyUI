@@ -139,7 +139,6 @@ public class ButtonDrawer : PropertyDrawer
 
         doanim.anim = anim;
         doanim.animTrigger = "menuOut";
-        doanim.delay = 0.7f;
 
     }
 

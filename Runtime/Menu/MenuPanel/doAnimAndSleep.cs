@@ -4,7 +4,6 @@ public class doAnimAndSleep : MonoBehaviour
 {
 
     public string animTrigger;
-    public float delay;
     public Animator anim;
 
     private AnimationEvent myEvent;
@@ -40,12 +39,6 @@ public class doAnimAndSleep : MonoBehaviour
     public void sleepAfterDelay()
     {
         gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
 
