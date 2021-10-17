@@ -25,7 +25,6 @@ public class ProjectData : ScriptableObject
     public List<AudioMixer> audioMixers;
     private Dictionary<string, AudioClip> mixers;
     [HideInInspector]
-    public AudioSource player;
     public AudioClip menuMusic;
     public string menuConfirm;
     public string menuCancel;
@@ -66,7 +65,7 @@ public class ProjectData : ScriptableObject
         audio.TryGetValue(sound, out AudioClip clip);
         if (clip != null)
         {
-            player?.PlayOneShot(clip);
+            ProjectSettings.audioPlayer?.PlayOneShot(clip);
         }
     }
 

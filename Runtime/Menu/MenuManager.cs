@@ -35,7 +35,8 @@ namespace EUI
         public UnityEvent continueGameEvent;
         public UnityEvent stopGameEvent;
 
-        public bool changeScene = true;
+        public bool changeSceneOnStart = true;
+        public bool changeSceneOnEnd = false;//there is a bug here that causes bugs and a duplication? of MenuManager.
         public static bool isPaused = false;
 
         private GameObject msgPanel;
@@ -62,22 +63,22 @@ namespace EUI
 
         private void OnLevelWasLoaded(int level)
         {
-            audio = GetComponent<AudioSource>();
-            panels = gameObject.GetComponent<ShowPanels>();
-
             if (MenuManager.ins != null && MenuManager.ins != this)
             {
-                Destroy(this);
+                Destroy(gameObject);
             }
             else
             {
                 MenuManager.ins = this;
             }
+            audio = GetComponent<AudioSource>();
+            panels = gameObject.GetComponent<ShowPanels>();
+            ProjectSettings.audioPlayer = GetComponent<AudioSource>();
 
-            /*string[] hideInMenu = { "GamePanel", "GameOver" };
-            string[] hideInGame = { "GameOver" };
-            string[] showInGame = { "GamePanel" };
-            string[] showInMenu = { "MenuBG" };
+            string[] hideInMenu = { "" };
+            string[] hideInGame = { "" };
+            string[] showInGame = { "" };
+            string[] showInMenu = { "" };
 
             if (ProjectSettings.data.showInMenu != "")
             {
@@ -95,16 +96,19 @@ namespace EUI
             {
                 hideInGame = ProjectSettings.data.hideInGame.Split(',');
             }
+            if(level == 2) { level = 0; }
 
             switch (level)
             {
                 case 0:
                     foreach (string s in hideInMenu)
                     {
+                        if (s == "") { continue; }
                         panels.hidePanel(s);
                     }
                     foreach (string s in showInMenu)
                     {
+                        if (s == "") { continue; }
                         panels.showPanel(s);
                     }
                     break;
@@ -112,15 +116,17 @@ namespace EUI
                 case 1:
                     foreach (string s in hideInGame)
                     {
+                        if (s == "") { continue; }
                         panels.hidePanel(s);
                     }
                     foreach (string s in showInGame)
                     {
+                        if (s == "") { continue; }
                         panels.showPanel(s);
                     }
                     break;
-            }*/
-
+            }
+            
         }
 
         public void changeMenu(string panel, string pressSound = "", bool modalMenu = false)
@@ -191,7 +197,7 @@ namespace EUI
             //audio.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("sfxVol"));
             //music.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("musicVol"));
 
-
+            if (HandleMusic) { changeMusic(ProjectSettings.Data.menuMusic); }
             //use an event to change music after pdata is loaded?
             MenuManager.ins = returnInstance();
             panels = gameObject.GetComponent<ShowPanels>();
@@ -207,8 +213,10 @@ namespace EUI
                 pausePanelName = pausePanel.name;
             }
             ProjectData d = ProjectSettings.GetData();
-            ProjectSettings.Data.player = GetComponent<AudioSource>();
-            fader = panels.returnPanel("Fade").GetComponent<FaderControl>();
+            ProjectSettings.audioPlayer = GetComponent<AudioSource>();
+            GameObject f = panels.returnPanel("Fade");
+            if (f != null) { fader = f.GetComponent<FaderControl>(); }
+            
         }
 
 
@@ -285,9 +293,12 @@ namespace EUI
             runStartEvent = runStartGameEvents;
             ProjectSettings.Data.PlaySound(ProjectSettings.data.gameStart);
             //error in webgl here
+            Time.timeScale = 1;
             panels.hidePanel(currentPanel, true);
-            fader.FadeOut(doStart);
-            currentPanel = "GamePanel";
+            if (fader == null) { doStart(); }
+            else { fader.FadeOut(doStart); }
+            
+            //currentPanel = "GamePanel";
 
         }
 
@@ -304,9 +315,9 @@ namespace EUI
 
         public void doStart()
         {
-            if (changeScene)
+            if (changeSceneOnStart)
             {
-                SceneManager.LoadScene(1, LoadSceneMode.Single);
+                SceneManager.LoadScene(1, LoadSceneMode.Single);//this causes issues with duplicate menumanagers i believe when you return to menu
             }
             else
             {
@@ -323,22 +334,24 @@ namespace EUI
             {
                 startGameEvent?.Invoke();
             }
-            fader.FadeIn(null);
+            fader?.FadeIn(null);
         }
 
         public void StopGameplay()
         {
             gameRunning = false;
             Time.timeScale = 1;
-            fader.FadeOut(doStop);
+            if (fader == null) { doStop(); }
+            else { fader?.FadeOut(doStop); }
+            
         }
 
         public void doStop()
         {
             stopGameEvent?.Invoke();
-            if (changeScene)
+            if (changeSceneOnEnd)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(2);
             }
             else
             {
@@ -351,9 +364,7 @@ namespace EUI
                 changeMusic(ProjectSettings.data.menuMusic);
             }
             
-            //panels.showPanel("MenuPanel", true);
-            //currentPanel = "MenuPanel";
-            fader.FadeIn(null);
+            fader?.FadeIn(null);
         }
 
         public void openWeb(string address)

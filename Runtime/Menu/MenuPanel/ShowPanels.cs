@@ -25,7 +25,7 @@ public class ShowPanels : MonoBehaviour
         else
         {
             Transform panelObj = transform.Find(panelName);
-            if (panelObj == null) { Debug.LogError("MenuMgr-No Panel Found:" + panelName); return null; }
+            if (panelObj == null) { Debug.LogWarning("MenuMgr-No Panel Found:" + panelName); return null; }
 
             return panelObj.gameObject;
         }

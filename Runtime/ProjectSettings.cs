@@ -3,6 +3,7 @@
 public static class ProjectSettings
 {
     public static ProjectData data;
+    public static AudioSource audioPlayer;
     public static ProjectData Data { get { return GetData(); } }
 
     public static ProjectData GetData()

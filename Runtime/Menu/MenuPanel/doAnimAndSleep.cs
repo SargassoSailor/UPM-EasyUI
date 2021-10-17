@@ -38,6 +38,7 @@ public class doAnimAndSleep : MonoBehaviour
 
     public void sleepAfterDelay()
     {
+        Debug.Log(name + "going to sleep");
         gameObject.SetActive(false);
     }
 

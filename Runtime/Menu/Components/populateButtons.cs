@@ -69,7 +69,13 @@ public class ButtonProps
                 break;
 
             case buttonFunction.Quit:
+#if UNITY_WEBGL
+                GameObject.Destroy(button.gameObject);
+#endif
+#if !UNITY_WEBGL
                 button.onClick.AddListener(() => MenuManager.ins.quitGame());
+#endif
+
                 break;
 
             case buttonFunction.setPref:
