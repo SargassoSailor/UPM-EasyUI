@@ -23,10 +23,5 @@
       "description": "Contains sample prefab menu components such as buttons",
       "path": "Samples/"
     }
-  ],
-  "scripts": {
-    "preversion": "git add -A && git commit -m \"pre-version commit\"",
-    "version": "auto-changelog -p && git add CHANGELOG.md",
-    "postversion": "git push && npm publish --registry https://repo.sargassosailor.com:4873"
-  }
+  ]
 }
