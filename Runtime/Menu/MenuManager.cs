@@ -129,6 +129,11 @@ namespace EUI
             
         }
 
+        //to be used to change menu in a unityevent
+        public void changeMenuUnity(string panel)
+        {
+            changeMenu(panel);  
+        }
         public void changeMenu(string panel, string pressSound = "", bool modalMenu = false)
         {
             if (pressSound == "")

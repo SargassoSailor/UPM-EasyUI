@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,10 @@ namespace Packages.ChrisAsh.EUI.Editor
             ProjectData data = ProjectSettings.GetData();
             if(data==null)
             {
+                if (!System.IO.Directory.Exists(Application.dataPath + "/resources"))
+                {
+                    System.IO.Directory.CreateDirectory(Application.dataPath + "/Resources");
+                }
                 bool canCopy = AssetDatabase.CopyAsset("Packages/com.chrisash.eui/DefaultProjectFile/projectData.asset", "Assets/Resources/ProjectSettings1.asset");
                 if (!canCopy) 
                 {
