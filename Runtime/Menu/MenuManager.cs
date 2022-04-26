@@ -264,7 +264,7 @@ namespace EUI
 
         public static void playMusic(AudioClip clip, bool restartMusicIfSame=false)
         {
-            if(ins.music.clip != clip || restartMusicIfSame)
+            if(ins.music.clip != clip || restartMusicIfSame || !ins.music.isPlaying)
             {
                 ins.changeMusic(clip);
             }
