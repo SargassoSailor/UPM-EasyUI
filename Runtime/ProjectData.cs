@@ -22,8 +22,8 @@ public class ProjectData : ScriptableObject
     [Header("Sound")]
     public List<AudioClip> audioList;
     private Dictionary<string, AudioClip> audio;
-    public List<AudioMixer> audioMixers;
-    private Dictionary<string, AudioClip> mixers;
+    public List<AudioMixerGroup> audioMixers;
+    private Dictionary<string, AudioMixerGroup> mixers;
     [HideInInspector]
     public AudioClip menuMusic;
     public string menuConfirm;
@@ -52,6 +52,12 @@ public class ProjectData : ScriptableObject
             if (a == null || audio.ContainsKey(a.name)) { continue; }
             audio.Add(a.name, a);
         }
+        mixers = new Dictionary<string, AudioMixerGroup>();
+        foreach (AudioMixerGroup a in audioMixers)
+        {
+            if (a == null || mixers.ContainsKey(a.name)) { continue; }
+            mixers.Add(a.audioMixer.name, a);
+        }
     }
 
     private void OnEnable()
@@ -77,5 +83,15 @@ public class ProjectData : ScriptableObject
     public string[] GetSoundList()
     {
         return audio.Keys.ToArray();
+    }
+
+    public AudioMixerGroup GetMixer(string name)
+    {
+        bool found = mixers.TryGetValue(name, out AudioMixerGroup mixer);
+        if(found)
+        {
+            return mixer;
+        }
+        else { return null; }
     }
 }

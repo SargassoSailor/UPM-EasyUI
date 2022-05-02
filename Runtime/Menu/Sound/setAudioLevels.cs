@@ -13,16 +13,17 @@ public class setAudioLevels : MonoBehaviour
     void Start()
     {
         Init();
-
     }
 
     public void Init()
     {
         slider = GetComponent<Slider>();
         float val = PlayerPrefs.GetFloat(prefName, 1);
-        slider.value = val;
-        slider.onValueChanged.AddListener(SetVolume);
-
+        if(slider)
+        {
+            slider.value = val;
+            slider.onValueChanged.AddListener(SetVolume);
+        }
         mixer.SetFloat("volume", Mathf.Log10(val) * 20);
     }
 
@@ -30,6 +31,5 @@ public class setAudioLevels : MonoBehaviour
     {
         mixer.SetFloat("volume", Mathf.Log10(val) * 20);
         PlayerPrefs.SetFloat(prefName, val);
-
     }
 }

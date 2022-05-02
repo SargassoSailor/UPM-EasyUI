@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 
 public static class ProjectSettings
 {
@@ -25,4 +26,5 @@ public static class ProjectSettings
         string val = (string)data.GetType().GetField(valName)?.GetValue(data);
         return val;
     }
+    
 }

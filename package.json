@@ -22,6 +22,11 @@
       "displayName": "UI Components",
       "description": "Contains sample prefab menu components such as buttons",
       "path": "Samples/"
+    },
+	{
+      "displayName": "Volume Sliders",
+      "description": "Contains sample prefab for options menu",
+      "path": "Samples~/MusicSlider/"
     }
   ]
 }
