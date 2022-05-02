@@ -44,6 +44,10 @@ public class ButtonProps
             }
         }
 
+        if (AC.audioName != "")
+        {
+            button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(AC.audioName));
+        }
 
         switch (onPress)
         {
@@ -101,10 +105,7 @@ public class ButtonProps
                 break;
         }
 
-        if (AC.audioName != "")
-        {
-            button.onClick.AddListener(() => ProjectSettings.Data.PlaySound(AC.audioName));
-        }
+        
     }
 }
 
