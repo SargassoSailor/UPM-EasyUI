@@ -1,6 +1,6 @@
 {
   "name": "com.chrisash.eui",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "displayName": "EasyUI Basic",
   "description": "a small bit of code to generate buttons with different events. Makes it easier to create menus.",
   "unity": "2020.1",
@@ -23,7 +23,7 @@
       "description": "Contains sample prefab menu components such as buttons",
       "path": "Samples/"
     },
-	{
+    {
       "displayName": "Volume Sliders",
       "description": "Contains sample prefab for options menu",
       "path": "Samples~/MusicSlider/"
