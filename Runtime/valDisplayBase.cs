@@ -8,6 +8,8 @@ public class valDisplayBase : MonoBehaviour
     private Text txt;
     private TMPro.TextMeshProUGUI txtmesh;
     public string var;
+    public string label;
+    public bool useLabel = false;
     public bool runOnce = false;
     // Use this for initialization
     void Start()
@@ -20,13 +22,15 @@ public class valDisplayBase : MonoBehaviour
     //set up update event.
     void Update()
     {
+        string labeltxt = "";
+        if (useLabel) { labeltxt = label + ": "; }
         if (txt != null)
         {
-            txt.text = GetVal(var);
+            txt.text = labeltxt+ GetVal(var);
         }
         if (txtmesh != null)
         {
-            txtmesh.text = GetVal(var);
+            txtmesh.text = labeltxt + GetVal(var);
         }
         if (runOnce) { this.enabled = false; }
         

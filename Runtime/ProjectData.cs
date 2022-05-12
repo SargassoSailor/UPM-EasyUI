@@ -4,7 +4,26 @@ using UnityEngine;
 using UnityEngine.Audio;
 [System.Serializable]
 
-
+public class ProjectTest
+{
+    [Header("Project Data")]
+    public string gameName = "CarDerby";
+    public string versionNum;
+    //public MenuManager menu;
+    [TextArea(6, 20)]
+    public string credits = "";
+    public GameObject defaultButton;
+    [Header("Sound")]
+    public List<AudioClip> audioList;
+    private Dictionary<string, AudioClip> audio;
+    public List<AudioMixerGroup> audioMixers;
+    private Dictionary<string, AudioMixerGroup> mixers;
+    [HideInInspector]
+    public AudioClip menuMusic;
+    public string menuConfirm;
+    public string menuCancel;
+    public string gameStart;
+}
 /// <summary>
 /// This is an asset which contains all the data for a theme.
 /// As an asset it live in the project folder, and get built into an asset bundle.
