@@ -13,7 +13,7 @@ namespace Packages.ChrisAsh.EUI.Editor
     
     public static class PackageSetup
     {
-        public const string k_SettingsPath = "Assets/EUIProject.asset";
+        public const string k_SettingsPath = "Assets/Resources/EUIProject.asset";
         [InitializeOnLoadMethod]
         public static void DoSetup()
         {
