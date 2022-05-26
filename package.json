@@ -17,6 +17,10 @@
     "email": "chrisashtear@gmail.com",
     "url": "https://chrisashtear.itch.io"
   },
+  "scripts": {
+    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "postversion": "git push"
+  },
   "samples": [
     {
       "displayName": "UI Components",
