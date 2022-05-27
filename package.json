@@ -1,6 +1,6 @@
 {
   "name": "com.chrisash.eui",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "displayName": "EasyUI Basic",
   "description": "a small bit of code to generate buttons with different events. Makes it easier to create menus.",
   "unity": "2020.1",
@@ -32,7 +32,7 @@
       "description": "Contains sample prefab for options menu",
       "path": "Samples~/MusicSlider/"
     },
-	{
+    {
       "displayName": "PopulateSettings prefabs",
       "description": "Contains sample prefabs(slider/toggle) for populate settings component",
       "path": "Samples~/PopSettingsPrefabs/"
