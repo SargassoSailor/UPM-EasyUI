@@ -109,11 +109,10 @@ public class ButtonProps
     }
 }
 
-public class populateButtons : MonoBehaviour
+public class populateButtons : populateItems
 {
 
     public List<ButtonProps> props;
-    public GameObject layoutGroup; // where to place generated buttons
     public GameObject prefab;//button prefab
 
     void Reset()
@@ -125,7 +124,6 @@ public class populateButtons : MonoBehaviour
         layoutGroup = gameObject;
         prefab = ProjectSettings.data.defaultButton;
     }
-    // Start is called before the first frame update
     //TODO: create monobehaviour that allows for single button props button. 
     public static Button createButton(ButtonProps props, GameObject buttonObj, bool isPrefab = true, GameObject layoutGroup = null)
     {
@@ -145,29 +143,8 @@ public class populateButtons : MonoBehaviour
 
         return button;
     }
-    void Start()
-    {
-        GUIutil.clearChildren(layoutGroup.transform, "none", true);
-        generateButtons();
-    }
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        foreach (Transform child in transform)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (child != null)
-                {
-                    UnityEditor.Undo.DestroyObjectImmediate(child.gameObject);
-                }
-            };
-        }
-        generateButtons();
-    }
-#endif
-    void generateButtons()
+    public override void generateItems()
     {
         bool selected = false;
         if (prefab == null) { prefab = ProjectSettings.data?.defaultButton; }

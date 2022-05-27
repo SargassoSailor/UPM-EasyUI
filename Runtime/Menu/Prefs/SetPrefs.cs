@@ -13,7 +13,7 @@ public class SetPrefs : MonoBehaviour
         Toggle t = GetComponent<Toggle>();
         if (t) { t.isOn = Convert.ToBoolean((PlayerPrefs.GetInt(prefName))); }
         Slider s = GetComponent<Slider>();
-        if (s) { s.value = PlayerPrefs.GetInt(prefName); }
+        if (s) { s.value = PlayerPrefs.GetFloat(prefName); }
     }
 
     public void setValue(bool val)
@@ -21,9 +21,9 @@ public class SetPrefs : MonoBehaviour
         PlayerPrefs.SetInt(prefName,val ? 1 : 0);
         PlayerPrefs.Save();
     }
-    public void setValue(int val)
+    public void setValue(float val)
     {
-        PlayerPrefs.SetInt(prefName, val);
+        PlayerPrefs.SetFloat(prefName, val);
         PlayerPrefs.Save(); 
     }
 }
