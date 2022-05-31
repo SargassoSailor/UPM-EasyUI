@@ -34,6 +34,7 @@ namespace EUI
         public UnityEvent startGameEvent;
         public UnityEvent continueGameEvent;
         public UnityEvent stopGameEvent;
+        public UnityEvent gameOverEvent;
 
         public bool changeSceneOnStart = true;
         public bool changeSceneOnEnd = false;//there is a bug here that causes bugs and a duplication? of MenuManager.
@@ -45,6 +46,8 @@ namespace EUI
         public FaderControl fader;
 
         public bool HandleMusic = true;
+
+        public int endSceneIndex = 0;
         public GameObject returnCurrentPanel()
         {
             return panels.returnPanel(currentPanel);
@@ -356,7 +359,7 @@ namespace EUI
             stopGameEvent?.Invoke();
             if (changeSceneOnEnd)
             {
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(endSceneIndex);
             }
             else
             {
@@ -413,7 +416,7 @@ namespace EUI
 
         public void doGameOver()
         {
-            panels.showPanel("GameOver");
+            gameOverEvent.Invoke();
         }
 
         public void UnPause()

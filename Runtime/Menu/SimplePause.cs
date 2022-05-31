@@ -38,16 +38,21 @@ public class SimplePause : MonoBehaviour
 
     public void DoPause(bool pause = true)
     {
-        isPaused = pause;
-
-        if (pause) { Time.timeScale = 0; }
-        else { Time.timeScale = 1; }
+        MenuPause(pause);
 
         if (showMenuWhenPaused)
         {
             MenuManager.returnInstance().setPanel(pausePanelName, pause);
         }
     }
+
+    public void MenuPause(bool pause = true)
+    {
+        isPaused = pause;
+        if (pause) { Time.timeScale = 0; }
+        else { Time.timeScale = 1; }
+    }
+
     public bool isGamePaused()
     {
         if (isPaused)
