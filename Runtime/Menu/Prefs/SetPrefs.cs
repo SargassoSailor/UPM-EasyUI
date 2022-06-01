@@ -12,7 +12,7 @@ public class SetPrefs : MonoBehaviour
     {
         Toggle t = GetComponent<Toggle>();
         if (t) { t.isOn = Convert.ToBoolean((PlayerPrefs.GetInt(prefName))); }
-        Slider s = GetComponent<Slider>();
+        Slider s = GetComponentInChildren<Slider>();
         if (s) { s.value = PlayerPrefs.GetFloat(prefName); }
     }
 
