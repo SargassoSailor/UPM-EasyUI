@@ -47,6 +47,8 @@ namespace EUI
 
         public bool HandleMusic = true;
 
+        public ProjectData projectData;
+
         public int endSceneIndex = 0;
         public GameObject returnCurrentPanel()
         {
@@ -55,7 +57,7 @@ namespace EUI
         public void quitGame()
         {
             Invoke("exit", 1);
-            ProjectSettings.Data.PlaySound(ProjectSettings.data.menuCancel);
+            projectData.PlaySound(projectData.menuCancel);
             panels.hidePanel(currentPanel, true);
         }
 
@@ -83,21 +85,21 @@ namespace EUI
             string[] showInGame = { "" };
             string[] showInMenu = { "" };
 
-            if (ProjectSettings.data.showInMenu != "")
+            if (projectData.showInMenu != "")
             {
-                showInMenu = ProjectSettings.data.showInMenu.Split(',');
+                showInMenu = projectData.showInMenu.Split(',');
             }
-            if (ProjectSettings.data.hideInMenu != "")
+            if (projectData.hideInMenu != "")
             {
-                hideInMenu = ProjectSettings.data.hideInMenu.Split(',');
+                hideInMenu = projectData.hideInMenu.Split(',');
             }
-            if (ProjectSettings.data.showInGame != "")
+            if (projectData.showInGame != "")
             {
-                showInGame = ProjectSettings.data.showInGame.Split(',');
+                showInGame = projectData.showInGame.Split(',');
             }
-            if (ProjectSettings.data.hideInGame != "")
+            if (projectData.hideInGame != "")
             {
-                hideInGame = ProjectSettings.data.hideInGame.Split(',');
+                hideInGame = projectData.hideInGame.Split(',');
             }
             if(level == 2) { level = 0; }
 
@@ -141,9 +143,9 @@ namespace EUI
         {
             if (pressSound == "")
             {
-                pressSound = ProjectSettings.Data.menuConfirm;
+                pressSound = projectData.menuConfirm;
             }
-            ProjectSettings.Data.PlaySound(pressSound);
+            projectData.PlaySound(pressSound);
             prevPanel = currentPanel;
             if (!modalMenu && currentPanel!=panel)
             {
@@ -178,7 +180,7 @@ namespace EUI
 
             if (targetPanel != null)
             {
-                changeMenu(targetPanel, ProjectSettings.Data.menuCancel);
+                changeMenu(targetPanel, projectData.menuCancel);
             }
 
         }
@@ -195,6 +197,12 @@ namespace EUI
             music.Play();
         }
 
+        private void OnValidate()
+        {
+            if (projectData == null) { projectData = ProjectSettings.Data; }
+            if(ProjectSettings.data == null) { ProjectSettings.data = projectData; }
+        }
+
         public void OnEnable()
         {
             AudioSource[] audios = GetComponents<AudioSource>();
@@ -205,7 +213,7 @@ namespace EUI
             //audio.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("sfxVol"));
             //music.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("musicVol"));
 
-            if (HandleMusic) { changeMusic(ProjectSettings.Data.menuMusic); }
+            if (HandleMusic) { changeMusic(projectData.menuMusic); }
             //use an event to change music after pdata is loaded?
             MenuManager.ins = returnInstance();
             panels = gameObject.GetComponent<ShowPanels>();
@@ -220,7 +228,6 @@ namespace EUI
             {
                 pausePanelName = pausePanel.name;
             }
-            ProjectData d = ProjectSettings.GetData();
             ProjectSettings.audioPlayer = GetComponent<AudioSource>();
             GameObject f = panels.returnPanel("Fade");
             if (f != null) { fader = f.GetComponent<FaderControl>(); }
@@ -230,7 +237,7 @@ namespace EUI
 
         public void finishInit()
         {
-            //changeMusic(ProjectSettings.data.menuMusic);
+            //changeMusic(projectData.menuMusic);
         }
 
 
@@ -248,7 +255,7 @@ namespace EUI
 
         public void processPrefs()
         {
-            playSound(ProjectSettings.data.menuConfirm);
+            playSound(projectData.menuConfirm);
             setVolume();
         }
 
@@ -262,7 +269,7 @@ namespace EUI
 
         public static void playSound(string sfxName)
         {
-            ProjectSettings.Data.PlaySound(sfxName);
+            ProjectSettings.data.PlaySound(sfxName);
         }
 
         public static void playMusic(AudioClip clip, bool restartMusicIfSame=false)
@@ -299,7 +306,7 @@ namespace EUI
         public void startGame(bool runStartGameEvents = true)
         {
             runStartEvent = runStartGameEvents;
-            ProjectSettings.Data.PlaySound(ProjectSettings.data.gameStart);
+            projectData.PlaySound(projectData.gameStart);
             //error in webgl here
             Time.timeScale = 1;
             panels.hidePanel(currentPanel, true);
@@ -334,7 +341,7 @@ namespace EUI
 
             if(HandleMusic)
             {
-                changeMusic(ProjectSettings.data.gameMusic);
+                changeMusic(projectData.gameMusic);
             }
             
             MenuManager.gameRunning = true;
@@ -369,7 +376,7 @@ namespace EUI
             
             if(HandleMusic)
             {
-                changeMusic(ProjectSettings.data.menuMusic);
+                changeMusic(projectData.menuMusic);
             }
             
             fader?.FadeIn(null);
@@ -377,7 +384,7 @@ namespace EUI
 
         public void openWeb(string address)
         {
-            ProjectSettings.Data.PlaySound(ProjectSettings.data.menuConfirm);
+            projectData.PlaySound(projectData.menuConfirm);
 #if !UNITY_WEBGL
             Application.OpenURL(address);
 #endif
@@ -391,7 +398,7 @@ namespace EUI
             UnPause();
             panels.hidePanel("GameOver", true);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            MenuManager.ins.changeMusic(ProjectSettings.data.gameMusic);
+            MenuManager.ins.changeMusic(projectData.gameMusic);
             startGame();
         }
 
