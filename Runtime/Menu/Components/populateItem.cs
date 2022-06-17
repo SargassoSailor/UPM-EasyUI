@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 
 public class populateItems : MonoBehaviour
@@ -20,6 +23,8 @@ public class populateItems : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
+        PrefabStage editingPrefab = PrefabStageUtility.GetCurrentPrefabStage();
+        if (editingPrefab != null) { return; }
         foreach (Transform child in transform)
         {
             UnityEditor.EditorApplication.delayCall += () =>

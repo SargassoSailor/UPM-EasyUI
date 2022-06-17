@@ -17,6 +17,12 @@ public class valDisplayBase : MonoBehaviour
         txt = gameObject.GetComponent<Text>();
         txtmesh = gameObject.GetComponent<TMPro.TextMeshProUGUI>();
         //autosize text element for scrolling?
+        AfterStart();
+    }
+
+    public virtual void AfterStart()
+    {
+
     }
 
     //set up update event.
