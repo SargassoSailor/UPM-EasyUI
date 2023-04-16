@@ -24,7 +24,7 @@ public class FaderControl : MonoBehaviour
 
     IEnumerator CompleteFade(E_callback callback)
     {
-        yield return new WaitForSeconds(animTime);
+        yield return new WaitForSecondsRealtime(animTime);
         callback?.Invoke();
     }
 

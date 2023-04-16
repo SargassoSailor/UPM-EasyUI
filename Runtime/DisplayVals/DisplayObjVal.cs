@@ -15,6 +15,7 @@ public class DisplayObjVal : MonoBehaviour
     //used by custom inspector
     public int compIdx = 0;
     public int varIdx = 0;
+    public bool showLabel = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +45,11 @@ public class DisplayObjVal : MonoBehaviour
             //get field for variables?
             //why is this not saving
             //text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
-            text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
+            string label = "";
+            if (showLabel) { label = selComp.GetType().GetProperty(selVar).Name + "-"; }
+            string val = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
+            
+            text.text = $"{label}{val}";
         }
         
     }

@@ -47,6 +47,7 @@ public class DisplayObjEditor : Editor
             List<string> compNames = new List<string>();
             foreach (Component comp in comps)
             {
+                if(comp == null) { continue; }//check for invalid components. Itll pass then break the sub var listing
                 compNames.Add(comp.GetType().ToString());
             }
             compList = compNames.ToArray();

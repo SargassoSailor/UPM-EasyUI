@@ -39,10 +39,10 @@ public class ProjectData : ScriptableObject
     public string credits = "";
     public GameObject defaultButton;
     [Header("Sound")]
-    public List<AudioClip> audioList;
-    private Dictionary<string, AudioClip> audio;
-    public List<AudioMixerGroup> audioMixers;
-    private Dictionary<string, AudioMixerGroup> mixers;
+    public List<AudioClip> audioList = new List<AudioClip>();
+    private Dictionary<string, AudioClip> audio = new Dictionary<string, AudioClip>();
+    public List<AudioMixerGroup> audioMixers = new List<AudioMixerGroup>();
+    private Dictionary<string, AudioMixerGroup> mixers = new Dictionary<string, AudioMixerGroup>();
     [HideInInspector]
     public AudioClip menuMusic;
     public string menuConfirm;

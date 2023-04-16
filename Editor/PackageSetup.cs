@@ -13,15 +13,22 @@ namespace Packages.ChrisAsh.EUI.Editor
     
     public static class PackageSetup
     {
-        public const string k_SettingsPath = "Assets/Resources/EUIProject.asset";
+        public const string k_SettingsPath = "Assets/Resources/";
+        public const string k_SettingsName = "EUIProject.asset";
         [InitializeOnLoadMethod]
         public static void DoSetup()
         {
-            var settings = AssetDatabase.LoadAssetAtPath<ProjectData>(k_SettingsPath);
+            var settings = AssetDatabase.LoadAssetAtPath<ProjectData>(k_SettingsPath+k_SettingsName);
             if (settings == null)
             {
                 settings = ScriptableObject.CreateInstance<ProjectData>();
-                AssetDatabase.CreateAsset(settings, k_SettingsPath);
+
+                if (!Directory.Exists(k_SettingsPath))
+                {
+                    Directory.CreateDirectory(k_SettingsPath);
+                }
+
+                AssetDatabase.CreateAsset(settings, k_SettingsPath + k_SettingsName);
                 AssetDatabase.SaveAssets();
             }
             ProjectSettings.data = settings;
