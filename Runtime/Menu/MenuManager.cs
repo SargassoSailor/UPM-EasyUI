@@ -36,8 +36,6 @@ namespace EUI
         public UnityEvent stopGameEvent;
         public UnityEvent gameOverEvent;
 
-        public bool changeSceneOnStart = true;
-        public bool changeSceneOnEnd = false;//there is a bug here that causes bugs and a duplication? of MenuManager.
         public static bool isPaused = false;
 
         private GameObject msgPanel;
@@ -54,6 +52,7 @@ namespace EUI
         private void Awake()
         {
             panels = new ShowPanels(gameObject);
+            NewGameMGR.ev_gameOver += doGameOver;
         }
 
         public GameObject returnCurrentPanel()
@@ -65,6 +64,7 @@ namespace EUI
             Invoke("exit", 1);
             projectData.PlaySound(projectData.menuCancel);
             panels.hidePanel(currentPanel, true);
+            //coroutine that calls after everything is complete.
         }
 
         public void exit()
@@ -83,7 +83,6 @@ namespace EUI
                 MenuManager.ins = this;
             }
             audio = GetComponent<AudioSource>();
-            panels = gameObject.GetComponent<ShowPanels>();
             ProjectSettings.audioPlayer = GetComponent<AudioSource>();
 
             string[] hideInMenu = { "" };
@@ -239,13 +238,6 @@ namespace EUI
             
         }
 
-
-        public void finishInit()
-        {
-            //changeMusic(projectData.menuMusic);
-        }
-
-
         public void setVolume()
         {
             if (PlayerPrefs.GetString("Muted", "no") != "yes")
@@ -285,19 +277,6 @@ namespace EUI
             }
         }
 
-        public static void statusMessage(string message, float time = 1)
-        {
-            //GameManager.ins.setUIVal("message", message);
-            ins.panels.showPanel("MessagePanel", false);
-            ins.msgPanel = ins.panels.returnPanel("MessagePanel");
-            ins.Invoke("endStatusMessage", time);
-        }
-
-        public void endStatusMessage()
-        {
-            msgPanel.GetComponent<doAnimAndSleep>().doAnim();
-        }
-
         public void toggleUIelement(GameObject obj)
         {
             obj.SetActive(!obj.activeSelf);
@@ -324,25 +303,21 @@ namespace EUI
 
         public void loadGame()
         {
-            startGame();
-            Invoke("doLoad", 2f);
-        }
-
-        public void doLoad()
-        {
-            continueGameEvent?.Invoke();
+            NewGameMGR.LoadGame();
         }
 
         public void doStart()
         {
-            if (changeSceneOnStart)
+            /*if (changeSceneOnStart)
             {
+                SceneManager.sceneLoaded += NewGameMGR.StartGameDelayed;
                 SceneManager.LoadScene(1, LoadSceneMode.Single);//this causes issues with duplicate menumanagers i believe when you return to menu
             }
             else
-            {
+            {*/
                 OnLevelWasLoaded(1);
-            }
+                NewGameMGR.StartGame();
+            //}
 
             if(HandleMusic)
             {
@@ -369,14 +344,15 @@ namespace EUI
         public void doStop()
         {
             stopGameEvent?.Invoke();
-            if (changeSceneOnEnd)
+            /*if (changeSceneOnEnd)
             {
                 SceneManager.LoadScene(endSceneIndex);
             }
             else
-            {
+            {*/
                 OnLevelWasLoaded(0);
-            }
+                NewGameMGR.StopGame();
+            //}
             changeMenu("MenuPanel");
             
             if(HandleMusic)
@@ -398,16 +374,6 @@ namespace EUI
 #endif
         }
 
-        public void Restart()
-        {
-            UnPause();
-            panels.hidePanel("GameOver", true);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            MenuManager.ins.changeMusic(projectData.gameMusic);
-            startGame();
-        }
-
-
         public static MenuManager returnInstance()
         {
             MenuManager instance = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>(); // i know this is an extra line but unity freaked out when removed.
@@ -415,28 +381,10 @@ namespace EUI
             return instance;
         }
 
-        public void DoPause(bool showPauseMenu = false)
-        {
-            MenuManager.isPaused = true;
-            //Set time.timescale to 0, this will cause animations and physics to stop updating
-            Time.timeScale = 0;
-            if (showPauseMenu)
-            {
-                panels.showPanel(pausePanelName);
-            }
-        }
-
-        public void doGameOver()
+        public void doGameOver(int player = 0)
         {
             gameOverEvent.Invoke();
-        }
-
-        public void UnPause()
-        {
-            MenuManager.isPaused = false;
-            //Set time.timescale to 1, this will cause animations and physics to continue updating at regular speed
-            Time.timeScale = 1;
-            panels.hidePanel(pausePanelName);
+            panels.showPanel("GameOver", true);
         }
 
     }
