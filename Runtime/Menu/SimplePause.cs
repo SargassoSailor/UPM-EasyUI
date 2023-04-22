@@ -62,7 +62,7 @@ public class SimplePause : MonoBehaviour
 
         if (showMenuWhenPaused)
         {
-            MenuManager.returnInstance().setPanel(pausePanelName, pause);
+            MenuManager.setPanel(pausePanelName, pause);
         }
     }
 

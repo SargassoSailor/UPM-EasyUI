@@ -24,7 +24,7 @@ public class ButtonDrawer : PropertyDrawer
     public static bool boolPreference = false;
 
     // Add preferences section named "My Preferences" to the Preferences window
-    [PreferenceItem("My Preferences")]
+    [PreferenceItem("My Fancy Prefs")]
     public static void PreferencesGUI()
     {
         // Load the preferences

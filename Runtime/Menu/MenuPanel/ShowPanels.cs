@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 
-public class ShowPanels : MonoBehaviour
+public class ShowPanels
 {
 
     public GameObject DialogContainer;//container for dialog box windows that go over everything
 
     public string animInName;
     public string animOutName;
-    //public GameObject parentPanel;
 
-    //Call this function to activate and display the Options panel during the main menu
+    private GameObject panelParent;
+
+    public ShowPanels(GameObject obj)
+    {
+        panelParent = obj;
+    }
 
     public void setPanel(string panelName, bool enabled, bool dialog)
     {
@@ -24,7 +28,7 @@ public class ShowPanels : MonoBehaviour
         }
         else
         {
-            Transform panelObj = transform.Find(panelName);
+            Transform panelObj = panelParent.transform.Find(panelName);
             if (panelObj == null) { Debug.LogWarning("MenuMgr-No Panel Found:" + panelName); return null; }
 
             return panelObj.gameObject;

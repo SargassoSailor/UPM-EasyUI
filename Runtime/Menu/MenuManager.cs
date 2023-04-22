@@ -50,6 +50,12 @@ namespace EUI
         public ProjectData projectData;
 
         public int endSceneIndex = 0;
+
+        private void Awake()
+        {
+            panels = new ShowPanels(gameObject);
+        }
+
         public GameObject returnCurrentPanel()
         {
             return panels.returnPanel(currentPanel);
@@ -160,9 +166,9 @@ namespace EUI
             currentPanel = panel;
         }
 
-        public void setPanel(string panel, bool show)
+        public static void setPanel(string panel, bool show)
         {
-            panels.setPanel(panel, show, false);
+            ins.panels.setPanel(panel, show, false);
         }
 
         public void goBack()
@@ -216,7 +222,6 @@ namespace EUI
             if (HandleMusic) { changeMusic(projectData.menuMusic); }
             //use an event to change music after pdata is loaded?
             MenuManager.ins = returnInstance();
-            panels = gameObject.GetComponent<ShowPanels>();
 
 #if UNITY_ANDROID
         //googlePlay = GameObject.Find("UI").GetComponent<gplayInteractor>();
