@@ -11,7 +11,6 @@ public class SimplePause : MonoBehaviour
     private bool isPaused;								//Boolean to check if the game is paused or not
     public string pausePanelName = "PausePanel";
     public bool showMenuWhenPaused = true;
-    bool canPause = false;
 #if NEW_INPUT
     public InputAction pauseKeybinds;
 #endif
@@ -21,11 +20,6 @@ public class SimplePause : MonoBehaviour
         pauseKeybinds.Enable();
         pauseKeybinds.performed += DoPause;
 #endif
-    }
-
-    public void SetPauseAbility(bool canPause)
-    {
-        this.canPause = canPause;
     }
 
     // Update is called once per frame
@@ -50,38 +44,16 @@ public class SimplePause : MonoBehaviour
 #if NEW_INPUT
     public void DoPause(InputAction.CallbackContext inp)
     {
-        if(canPause)
-        {
-            DoPause(!isPaused);
-        }
+         DoPause(!isPaused);
     }
 #endif
     public void DoPause(bool pause = true)
     {
-        MenuPause(pause);
-
-        if (showMenuWhenPaused)
+        bool pauseCompleted = NewGameMGR.SetPause(pause);
+        isPaused = pause;
+        if (showMenuWhenPaused && pauseCompleted)
         {
             MenuManager.setPanel(pausePanelName, pause);
-        }
-    }
-
-    public void MenuPause(bool pause = true)
-    {
-        isPaused = pause;
-        if (pause) { Time.timeScale = 0; }
-        else { Time.timeScale = 1; }
-    }
-
-    public bool isGamePaused()
-    {
-        if (isPaused)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using EUI;
 
+//Old Pause, migrate volume code to simplepause
 public class Pause : MonoBehaviour {
 
 
@@ -22,15 +23,6 @@ public class Pause : MonoBehaviour {
         //Get a component reference to ShowPanels attached to this object, store in showPanels variable
 		//Get a component reference to StartButton attached to this object, store in startScript variable
 	}
-
-    void OnLevelWasLoaded(int level)
-    {
-        /*GameObject player = GameObject.Find("playerTurret");
-        if(player != null)
-        {
-            playerControls = player.GetComponent<UnityStandardAssets._2D.Turret2DUserControl>();
-        }*/
-    }
 
 	// Update is called once per frame
 	void Update () {
