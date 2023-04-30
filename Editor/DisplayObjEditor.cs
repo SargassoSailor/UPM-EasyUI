@@ -37,6 +37,7 @@ public class DisplayObjEditor : Editor
     {
         serializedObject.Update();
         EditorGUILayout.PropertyField(objectToTrack);
+        DrawDefaultInspector();
 
         compIndex = compIdx.intValue;
         varIndex = varIdx.intValue;
@@ -73,6 +74,8 @@ public class DisplayObjEditor : Editor
 
             selComp.objectReferenceValue = comps[compIndex];
             selVar.stringValue = propNames[varIndex];
+
+            
         }
         
 

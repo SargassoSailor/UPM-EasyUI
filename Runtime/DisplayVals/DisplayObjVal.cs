@@ -6,14 +6,20 @@ using System;
 
 public class DisplayObjVal : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject objectToTrack;
+    [HideInInspector]
     public Component selComp;
+    [HideInInspector]
     public string selVar;
-    public TextMeshProUGUI text;
+    private TextMeshProUGUI text;
+    [HideInInspector]
     public Type compType;
 
     //used by custom inspector
+    [HideInInspector]
     public int compIdx = 0;
+    [HideInInspector]
     public int varIdx = 0;
     public bool showLabel = false;
     // Start is called before the first frame update
@@ -46,7 +52,7 @@ public class DisplayObjVal : MonoBehaviour
             //why is this not saving
             //text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
             string label = "";
-            if (showLabel) { label = selComp.GetType().GetProperty(selVar).Name + "-"; }
+            if (showLabel) { label = selComp.GetType().GetProperty(selVar).Name + ":"; }
             string val = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
             
             text.text = $"{label}{val}";
