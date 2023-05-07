@@ -308,24 +308,21 @@ namespace EUI
 
         public void doStart()
         {
-            /*if (changeSceneOnStart)
-            {
-                SceneManager.sceneLoaded += NewGameMGR.StartGameDelayed;
-                SceneManager.LoadScene(1, LoadSceneMode.Single);//this causes issues with duplicate menumanagers i believe when you return to menu
-            }
-            else
-            {*/
-                OnLevelWasLoaded(1);
-                NewGameMGR.StartGame();
-            //}
+            OnLevelWasLoaded(1);
+            NewGameMGR.levelReady += finishStart;
+            NewGameMGR.StartGame();
 
             if(HandleMusic)
             {
                 changeMusic(projectData.gameMusic);
             }
-            
+
+        }
+
+        public void finishStart()
+        {
             MenuManager.gameRunning = true;
-            if(runStartEvent)
+            if (runStartEvent)
             {
                 startGameEvent?.Invoke();
             }
