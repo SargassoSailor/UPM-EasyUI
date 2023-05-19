@@ -69,7 +69,10 @@ public class ButtonProps
                 break;
 
             case buttonFunction.Continue:
-                button.onClick.AddListener(() => MenuManager.ins.loadGame());
+                if(GameMGR.doesSaveExist)
+                { button.onClick.AddListener(() => MenuManager.ins.loadGame()); }  
+                else
+                { GameObject.Destroy(button.gameObject); }
                 break;
 
             case buttonFunction.Quit:

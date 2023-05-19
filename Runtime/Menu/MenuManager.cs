@@ -41,8 +41,6 @@ namespace EUI
         private GameObject msgPanel;
         private bool runStartEvent = true;
 
-        public FaderControl fader;
-
         public bool HandleMusic = true;
 
         public ProjectData projectData;
@@ -52,7 +50,7 @@ namespace EUI
         private void Awake()
         {
             panels = new ShowPanels(gameObject);
-            NewGameMGR.ev_gameOver += doGameOver;
+            GameMGR.ev_gameOver += doGameOver;
         }
 
         public GameObject returnCurrentPanel()
@@ -233,9 +231,7 @@ namespace EUI
                 pausePanelName = pausePanel.name;
             }
             ProjectSettings.audioPlayer = GetComponent<AudioSource>();
-            GameObject f = panels.returnPanel("Fade");
-            if (f != null) { fader = f.GetComponent<FaderControl>(); }
-            
+            if (runStartEvent) { GameMGR.levelReady += finishStart; }
         }
 
         public void setVolume()
@@ -294,23 +290,21 @@ namespace EUI
             //error in webgl here
             Time.timeScale = 1;
             panels.hidePanel(currentPanel, true);
-            if (fader == null) { doStart(); }
-            else { fader.FadeOut(doStart); }
-            
-            //currentPanel = "GamePanel";
-
+            doStart();
         }
 
         public void loadGame()
         {
-            NewGameMGR.LoadGame();
+            Time.timeScale = 1;
+            panels.hidePanel(currentPanel, true);
+            GameMGR.LoadGame();
         }
 
         public void doStart()
         {
             OnLevelWasLoaded(1);
-            NewGameMGR.levelReady += finishStart;
-            NewGameMGR.StartGame();
+            
+            GameMGR.StartGame();
 
             if(HandleMusic)
             {
@@ -326,15 +320,12 @@ namespace EUI
             {
                 startGameEvent?.Invoke();
             }
-            fader?.FadeIn(null);
         }
 
         public void StopGameplay()
         {
             gameRunning = false;
             Time.timeScale = 1;
-            if (fader == null) { doStop(); }
-            else { fader?.FadeOut(doStop); }
             
         }
 
@@ -348,7 +339,7 @@ namespace EUI
             else
             {*/
                 OnLevelWasLoaded(0);
-                NewGameMGR.StopGame();
+                GameMGR.StopGame();
             //}
             changeMenu("MenuPanel");
             
@@ -356,8 +347,7 @@ namespace EUI
             {
                 changeMusic(projectData.menuMusic);
             }
-            
-            fader?.FadeIn(null);
+
         }
 
         public void openWeb(string address)

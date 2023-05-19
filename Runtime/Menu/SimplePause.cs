@@ -49,7 +49,7 @@ public class SimplePause : MonoBehaviour
 #endif
     public void DoPause(bool pause = true)
     {
-        bool pauseCompleted = NewGameMGR.SetPause(pause);
+        bool pauseCompleted = GameMGR.SetPause(pause);
         isPaused = pause;
         if (showMenuWhenPaused && pauseCompleted)
         {
