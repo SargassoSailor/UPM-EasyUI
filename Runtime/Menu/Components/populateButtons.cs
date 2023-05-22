@@ -99,7 +99,7 @@ public class ButtonProps
                 break;
 
             case buttonFunction.OpenWeb:
-                button.onClick.AddListener(() => MenuManager.returnInstance().openWeb(argument));
+                button.onClick.AddListener(() => MenuManager.openWeb(argument));
                 break;
 
             case buttonFunction.popupMenu:

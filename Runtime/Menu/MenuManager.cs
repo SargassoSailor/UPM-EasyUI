@@ -13,23 +13,14 @@ namespace EUI
 
         public static MenuManager ins;
 
+        public List<GameObject> visibleInMenu = new List<GameObject>();
+        public List<GameObject> visibleInGame = new List<GameObject>();
+
         [HideInInspector] public string currentPanel = "MenuPanel";
         private string prevPanel;
 
-        public GameObject pausePanel;
-        [HideInInspector] public string pausePanelName = "PausePanel";
-
-        protected Dictionary<string, AudioClip> sounds;
-
-
-        private AudioSource audio;
-        private AudioSource music;
-
         public static bool gameRunning = false;
         public static bool dataLoaded { get; } = false;
-
-        public GameObject detailsCard;
-        public GameObject selectedItem;
 
         public UnityEvent startGameEvent;
         public UnityEvent continueGameEvent;
@@ -41,9 +32,11 @@ namespace EUI
         private GameObject msgPanel;
         private bool runStartEvent = true;
 
-        public bool HandleMusic = true;
+        
 
         public ProjectData projectData;
+
+        public I_AudioProvider audio;
 
         public int endSceneIndex = 0;
 
@@ -51,6 +44,17 @@ namespace EUI
         {
             panels = new ShowPanels(gameObject);
             GameMGR.ev_gameOver += doGameOver;
+            //audio.Init(gameObject);
+            if (MenuManager.ins != null && MenuManager.ins != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                MenuManager.ins = this;
+            }
+            setActivePanels(visibleInMenu);
+            if(GetComponent<DontDestroy>() == null) { gameObject.AddComponent<DontDestroy>(); }
         }
 
         public GameObject returnCurrentPanel()
@@ -60,7 +64,7 @@ namespace EUI
         public void quitGame()
         {
             Invoke("exit", 1);
-            projectData.PlaySound(projectData.menuCancel);
+            //audio.PlaySound(projectData.menuCancel);
             panels.hidePanel(currentPanel, true);
             //coroutine that calls after everything is complete.
         }
@@ -68,73 +72,6 @@ namespace EUI
         public void exit()
         {
             Application.Quit();
-        }
-
-        private void OnLevelWasLoaded(int level)
-        {
-            if (MenuManager.ins != null && MenuManager.ins != this)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                MenuManager.ins = this;
-            }
-            audio = GetComponent<AudioSource>();
-            ProjectSettings.audioPlayer = GetComponent<AudioSource>();
-
-            string[] hideInMenu = { "" };
-            string[] hideInGame = { "" };
-            string[] showInGame = { "" };
-            string[] showInMenu = { "" };
-
-            if (projectData.showInMenu != "")
-            {
-                showInMenu = projectData.showInMenu.Split(',');
-            }
-            if (projectData.hideInMenu != "")
-            {
-                hideInMenu = projectData.hideInMenu.Split(',');
-            }
-            if (projectData.showInGame != "")
-            {
-                showInGame = projectData.showInGame.Split(',');
-            }
-            if (projectData.hideInGame != "")
-            {
-                hideInGame = projectData.hideInGame.Split(',');
-            }
-            if(level == 2) { level = 0; }
-
-            switch (level)
-            {
-                case 0:
-                    foreach (string s in hideInMenu)
-                    {
-                        if (s == "") { continue; }
-                        panels.hidePanel(s);
-                    }
-                    foreach (string s in showInMenu)
-                    {
-                        if (s == "") { continue; }
-                        panels.showPanel(s);
-                    }
-                    break;
-
-                case 1:
-                    foreach (string s in hideInGame)
-                    {
-                        if (s == "") { continue; }
-                        panels.hidePanel(s);
-                    }
-                    foreach (string s in showInGame)
-                    {
-                        if (s == "") { continue; }
-                        panels.showPanel(s);
-                    }
-                    break;
-            }
-            
         }
 
         //to be used to change menu in a unityevent
@@ -148,7 +85,7 @@ namespace EUI
             {
                 pressSound = projectData.menuConfirm;
             }
-            projectData.PlaySound(pressSound);
+            //projectData.PlaySound(pressSound);
             prevPanel = currentPanel;
             if (!modalMenu && currentPanel!=panel)
             {
@@ -188,18 +125,6 @@ namespace EUI
 
         }
 
-        public void changeMusic(AudioClip m)
-        {
-            music.Stop();
-            if (m == null)
-            {
-                return;
-            }
-            music.clip = m;
-            music.loop = true;
-            music.Play();
-        }
-
         private void OnValidate()
         {
             if (projectData == null) { projectData = ProjectSettings.Data; }
@@ -208,28 +133,13 @@ namespace EUI
 
         public void OnEnable()
         {
-            AudioSource[] audios = GetComponents<AudioSource>();
-
-            audio = audios[0];
-            music = audios[1];
-
-            //audio.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("sfxVol"));
-            //music.outputAudioMixerGroup.audioMixer.SetFloat("volume", PlayerPrefs.GetFloat("musicVol"));
-
-            if (HandleMusic) { changeMusic(projectData.menuMusic); }
-            //use an event to change music after pdata is loaded?
-            MenuManager.ins = returnInstance();
+            MenuManager.ins = this;
 
 #if UNITY_ANDROID
         //googlePlay = GameObject.Find("UI").GetComponent<gplayInteractor>();
 #endif
             setVolume();
 
-            currentPanel = "MenuPanel";
-            if (pausePanel != null)
-            {
-                pausePanelName = pausePanel.name;
-            }
             ProjectSettings.audioPlayer = GetComponent<AudioSource>();
             if (runStartEvent) { GameMGR.levelReady += finishStart; }
         }
@@ -248,29 +158,8 @@ namespace EUI
 
         public void processPrefs()
         {
-            playSound(projectData.menuConfirm);
+            //audio.PlaySound(projectData.menuConfirm);
             setVolume();
-        }
-
-        public void playSound(AudioClip clip)
-        {
-            audio.Stop();
-            if (clip == null)
-            { return; }
-            audio.PlayOneShot(clip);
-        }
-
-        public static void playSound(string sfxName)
-        {
-            ProjectSettings.data.PlaySound(sfxName);
-        }
-
-        public static void playMusic(AudioClip clip, bool restartMusicIfSame=false)
-        {
-            if(ins.music.clip != clip || restartMusicIfSame || !ins.music.isPlaying)
-            {
-                ins.changeMusic(clip);
-            }
         }
 
         public void toggleUIelement(GameObject obj)
@@ -286,7 +175,7 @@ namespace EUI
         public void startGame(bool runStartGameEvents = true)
         {
             runStartEvent = runStartGameEvents;
-            projectData.PlaySound(projectData.gameStart);
+            //projectData.PlaySound(projectData.gameStart);
             //error in webgl here
             Time.timeScale = 1;
             panels.hidePanel(currentPanel, true);
@@ -302,15 +191,22 @@ namespace EUI
 
         public void doStart()
         {
-            OnLevelWasLoaded(1);
-            
+            setActivePanels(visibleInGame);
             GameMGR.StartGame();
+        }
 
-            if(HandleMusic)
+        public void setActivePanels(List<GameObject> panels)
+        {
+            if(panels.Count == 0) { return; }
+            foreach (Transform child in gameObject.transform)
             {
-                changeMusic(projectData.gameMusic);
+                if (child.parent == transform)
+                    child.gameObject.SetActive(false);
             }
-
+            foreach(GameObject panel in panels)
+            {
+                panel.SetActive(true);
+            }
         }
 
         public void finishStart()
@@ -326,7 +222,7 @@ namespace EUI
         {
             gameRunning = false;
             Time.timeScale = 1;
-            
+            doStop();
         }
 
         public void doStop()
@@ -338,34 +234,21 @@ namespace EUI
             }
             else
             {*/
-                OnLevelWasLoaded(0);
-                GameMGR.StopGame();
+            setActivePanels(visibleInMenu);
+            GameMGR.StopGame();
             //}
             changeMenu("MenuPanel");
-            
-            if(HandleMusic)
-            {
-                changeMusic(projectData.menuMusic);
-            }
-
         }
 
-        public void openWeb(string address)
+        public static void openWeb(string address)
         {
-            projectData.PlaySound(projectData.menuConfirm);
+            //projectData.PlaySound(projectData.menuConfirm);
 #if !UNITY_WEBGL
             Application.OpenURL(address);
 #endif
 #if UNITY_WEBGL
         Application.ExternalEval("window.open(\"" + address + "\")");
 #endif
-        }
-
-        public static MenuManager returnInstance()
-        {
-            MenuManager instance = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>(); // i know this is an extra line but unity freaked out when removed.
-            ins = instance;
-            return instance;
         }
 
         public void doGameOver(int player = 0)

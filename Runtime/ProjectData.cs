@@ -50,6 +50,7 @@ public class ProjectData : ScriptableObject
     public string gameStart;
     [Header("Music")]
     public AudioClip gameMusic;
+    public I_AudioProvider audioProvider;
 
     [Header("Menus")]
     public string showInMenu;
