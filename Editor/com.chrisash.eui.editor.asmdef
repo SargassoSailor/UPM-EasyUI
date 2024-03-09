@@ -2,7 +2,8 @@
     "name": "com.chrisash.eui.editor",
     "rootNamespace": "",
     "references": [
-        "GUID:a3145f8ad4f25d04890bea8a96cd1db3"
+        "GUID:a3145f8ad4f25d04890bea8a96cd1db3",
+        "GUID:2ef19993e7e7e56468ea00048c4c3513"
     ],
     "includePlatforms": [
         "Editor"
