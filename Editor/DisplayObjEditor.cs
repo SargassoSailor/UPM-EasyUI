@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Reflection;
-using NUnit.Framework.Internal;
 using System.Linq;
 
 [CustomEditor(typeof(DisplayObjVal))]
@@ -18,12 +17,15 @@ public class DisplayObjEditor : Editor
     SerializedProperty selVar;
     SerializedProperty compIdx;
     SerializedProperty varIdx;
+    SerializedProperty subVarIdx;
+    SerializedProperty selSubVar;
     GameObject obj;
     int compIndex;
     string[] compList;
     int varIndex;
+    int subVarIndex;
     string[] varList;
-    private static string[] deprecatedProps = { "audio", "rigidbody2D", "rigidbody", "particleSystem", "collider", "collider2D", "renderer", "constantForce", "light", "animation", "camera", "hingeJoint", "networkView" };
+    private static string[] deprecatedProps = { "audio", "rigidbody2D", "parent","rigidbody", "particleSystem", "collider", "collider2D", "renderer", "constantForce", "light", "animation", "camera", "hingeJoint", "networkView" };
 
     void OnEnable()
     {
@@ -33,11 +35,17 @@ public class DisplayObjEditor : Editor
         selVar = serializedObject.FindProperty("selVar");
         compIdx = serializedObject.FindProperty("compIdx");
         varIdx = serializedObject.FindProperty("varIdx");
+        subVarIdx = serializedObject.FindProperty("subVarIdx");
+        selSubVar = serializedObject.FindProperty("selSubVar");
         obj = objectToTrack.objectReferenceValue as GameObject;
     }
 
     private List<string> GetProps(object c)
     {
+        if (c == null)
+        {
+            return new List<string>();
+        }
         PropertyInfo[] props = c.GetType().GetProperties();
         List<string> propNames = new List<string>();
 
@@ -51,6 +59,10 @@ public class DisplayObjEditor : Editor
 
     private List<string> GetFields(object c)
     {
+        if(c == null)
+        {
+            return new List<string>();
+        }
         FieldInfo[] fields = c.GetType().GetFields(BindingFlags.Public |
                                           /*BindingFlags.NonPublic |*/
                                           BindingFlags.Instance);
@@ -73,6 +85,7 @@ public class DisplayObjEditor : Editor
 
         compIndex = compIdx.intValue;
         varIndex = varIdx.intValue;
+        subVarIndex = subVarIdx.intValue;
 
         obj = objectToTrack.objectReferenceValue as GameObject;
 
@@ -110,19 +123,46 @@ public class DisplayObjEditor : Editor
                 varIndex = 0;
             }
             varList = propNames.ToArray();
+
+            List<string> subPropNames = new List<string>();
+
+            object subObj = null;
+
+            //need to support if prop/field is null. make an instance?
+            if(DisplayObjVal.isProperty(propNames[varIndex]))
+            {
+                subObj = c.GetType().GetProperty(propNames[varIndex].Substring(2)).GetValue(c);
+            }
+            else
+            {
+                subObj = c.GetType().GetField(propNames[varIndex].Substring(2)).GetValue(c);
+            }
+
+            subPropNames.Add("None");
+            subPropNames.AddRange(GetFields(subObj));
+            subPropNames.AddRange(GetProps(subObj));
+
             EditorGUILayout.LabelField("Property:");
             varIndex = EditorGUILayout.Popup(varIndex, varList);
             varIdx.intValue = varIndex;
 
-            DisplayObjVal valDisplay = (DisplayObjVal)target;
-            
-            valDisplay.selVar = propNames[varIndex];
-            valDisplay.selComp = comps[compIndex];
+            if (subPropNames.Count > 1)
+            {
+                EditorGUILayout.LabelField("Sub Property:");
+                subVarIndex = EditorGUILayout.Popup(subVarIndex, subPropNames.ToArray());
+
+                selSubVar.stringValue = subPropNames[subVarIndex];
+                subVarIdx.intValue = subVarIndex;
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"SubProperty: {selSubVar.stringValue}");
+            }
 
             selComp.objectReferenceValue = comps[compIndex];
             selVar.stringValue = propNames[varIndex];
-
             
+
         }
         else if(selComp.objectReferenceValue != null)
         {

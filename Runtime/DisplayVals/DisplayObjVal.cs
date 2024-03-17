@@ -12,6 +12,8 @@ public class DisplayObjVal : MonoBehaviour
     public Component selComp;
     [HideInInspector]
     public string selVar;
+    [HideInInspector]
+    public string selSubVar;
     private TextMeshProUGUI text;
     [HideInInspector]
     public Type compType;
@@ -21,6 +23,9 @@ public class DisplayObjVal : MonoBehaviour
     public int compIdx = 0;
     [HideInInspector]
     public int varIdx = 0;
+    [HideInInspector]
+    public int subVarIdx;
+
     public bool showLabel = false;
     // Start is called before the first frame update
     void Start()
@@ -47,6 +52,22 @@ public class DisplayObjVal : MonoBehaviour
         
     }
 
+    public static bool isProperty(string name)
+    {
+        string varType = name.Substring(0, 2);
+        string varName = name.Substring(2);
+        string val = "";
+        if (varType == "p-")
+        {
+            return true;
+        }
+        else if (varType == "f-")
+        {
+            return false;
+        }
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -54,17 +75,45 @@ public class DisplayObjVal : MonoBehaviour
         {
             string varType = selVar.Substring(0, 2);
             string varName = selVar.Substring(2);
-            string val = "";
+            string val = "null";
+            object obj = null;
             if(varType == "p-")
             {
                 //varName = selComp.GetType().GetProperty(varName).Name;
-                val = selComp.GetType().GetProperty(varName).GetValue(selComp).ToString();
+                obj = selComp.GetType().GetProperty(varName).GetValue(selComp);
             }
             else if(varType == "f-")
             {
                 //varName = selComp.GetType().GetField(varName).Name;
-                val = selComp.GetType().GetField(varName).GetValue(selComp).ToString();
+                obj = selComp.GetType().GetField(varName).GetValue(selComp);
             }
+
+            if (subVarIdx > 0)
+            {
+                string subVarType = selSubVar.Substring(0, 2);
+                string subVarName = selSubVar.Substring(2);
+                varName += $".{subVarName}";
+
+                object subObj = null;
+                if (subVarType == "p-")
+                {
+                    //varName = selComp.GetType().GetProperty(varName).Name;
+                    subObj = obj.GetType().GetProperty(subVarName).GetValue(obj);
+                }
+                else if (subVarType == "f-")
+                {
+                    //varName = selComp.GetType().GetField(varName).Name;
+                    subObj = obj.GetType().GetField(subVarName).GetValue(obj);
+                }
+
+                if (subObj != null) { val = subObj.ToString(); }
+
+            }
+            else
+            {
+                if (obj != null) { val = obj.ToString(); }
+            }
+
 
             //get field for variables?
             //why is this not saving
