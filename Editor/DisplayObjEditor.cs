@@ -7,6 +7,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using NUnit.Framework.Internal;
+using System.Linq;
 
 [CustomEditor(typeof(DisplayObjVal))]
 [CanEditMultipleObjects]
@@ -22,6 +23,8 @@ public class DisplayObjEditor : Editor
     string[] compList;
     int varIndex;
     string[] varList;
+    private static string[] deprecatedProps = { "audio", "rigidbody2D", "rigidbody", "particleSystem", "collider", "collider2D", "renderer", "constantForce", "light", "animation", "camera", "hingeJoint", "networkView" };
+
     void OnEnable()
     {
         //have displayobjval onvalidate create list.
@@ -33,17 +36,49 @@ public class DisplayObjEditor : Editor
         obj = objectToTrack.objectReferenceValue as GameObject;
     }
 
+    private List<string> GetProps(object c)
+    {
+        PropertyInfo[] props = c.GetType().GetProperties();
+        List<string> propNames = new List<string>();
+
+        foreach (PropertyInfo prop in props)
+        {
+            if (deprecatedProps.Contains(prop.Name)) { continue; }
+            propNames.Add($"p-{prop.Name}");
+        }
+        return propNames;
+    }
+
+    private List<string> GetFields(object c)
+    {
+        FieldInfo[] fields = c.GetType().GetFields(BindingFlags.Public |
+                                          /*BindingFlags.NonPublic |*/
+                                          BindingFlags.Instance);
+        List<string> propNames = new List<string>();
+
+        foreach (FieldInfo field in fields)
+        {
+            if (deprecatedProps.Contains(field.Name)) { continue; }
+            propNames.Add($"f-{field.Name}");
+        }
+        return propNames;
+    }
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
         EditorGUILayout.PropertyField(objectToTrack);
-        DrawDefaultInspector();
+        
+        //DrawDefaultInspector();
 
         compIndex = compIdx.intValue;
         varIndex = varIdx.intValue;
-        
-        if(obj != null)
+
+        obj = objectToTrack.objectReferenceValue as GameObject;
+
+        if (obj != null)
         {
+            EditorGUILayout.Space();
             Component[] comps = obj.GetComponents<Component>();
             List<string> compNames = new List<string>();
             foreach (Component comp in comps)
@@ -51,24 +86,36 @@ public class DisplayObjEditor : Editor
                 if(comp == null) { continue; }//check for invalid components. Itll pass then break the sub var listing
                 compNames.Add(comp.GetType().ToString());
             }
+
+            
+            if (compIndex > comps.Length)
+            {
+                compIndex = 0;
+            }
+
             compList = compNames.ToArray();
+            EditorGUILayout.LabelField("Component:");
 
             compIndex = EditorGUILayout.Popup(compIndex, compList);
             compIdx.intValue = compIndex;
 
             Component c = comps[compIndex];
-            PropertyInfo[] props = c.GetType().GetProperties();
+
             List<string> propNames = new List<string>();
-            foreach (PropertyInfo prop in props)
+            propNames.AddRange(GetFields(c));
+            propNames.AddRange(GetProps(c));
+
+            if (varIndex > propNames.Count)
             {
-                propNames.Add(prop.Name);
+                varIndex = 0;
             }
             varList = propNames.ToArray();
-
+            EditorGUILayout.LabelField("Property:");
             varIndex = EditorGUILayout.Popup(varIndex, varList);
             varIdx.intValue = varIndex;
 
             DisplayObjVal valDisplay = (DisplayObjVal)target;
+            
             valDisplay.selVar = propNames[varIndex];
             valDisplay.selComp = comps[compIndex];
 
@@ -77,8 +124,19 @@ public class DisplayObjEditor : Editor
 
             
         }
+        else if(selComp.objectReferenceValue != null)
+        {
+            EditorGUILayout.LabelField($"Component: {selComp.objectReferenceValue.GetType().ToString()}");
+            EditorGUILayout.LabelField($"Property: {selVar.stringValue}");
+        }
         
 
-        serializedObject.ApplyModifiedProperties();
+        bool changes = serializedObject.ApplyModifiedProperties();
+        if (changes)
+        {
+            Repaint();
+        }
+        //EditorUtility.SetDirty(EditorWindow.focusedWindow);
+        
     }
 }
