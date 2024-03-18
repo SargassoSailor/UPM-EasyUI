@@ -40,13 +40,13 @@ public class DisplayObjEditor : Editor
         obj = objectToTrack.objectReferenceValue as GameObject;
     }
 
-    private List<string> GetProps(object c)
+    private List<string> GetProps(Type c)
     {
         if (c == null)
         {
             return new List<string>();
         }
-        PropertyInfo[] props = c.GetType().GetProperties();
+        PropertyInfo[] props = c.GetProperties();
         List<string> propNames = new List<string>();
 
         foreach (PropertyInfo prop in props)
@@ -57,13 +57,13 @@ public class DisplayObjEditor : Editor
         return propNames;
     }
 
-    private List<string> GetFields(object c)
+    private List<string> GetFields(Type c)
     {
         if(c == null)
         {
             return new List<string>();
         }
-        FieldInfo[] fields = c.GetType().GetFields(BindingFlags.Public |
+        FieldInfo[] fields = c.GetFields(BindingFlags.Public |
                                           /*BindingFlags.NonPublic |*/
                                           BindingFlags.Instance);
         List<string> propNames = new List<string>();
@@ -115,8 +115,8 @@ public class DisplayObjEditor : Editor
             Component c = comps[compIndex];
 
             List<string> propNames = new List<string>();
-            propNames.AddRange(GetFields(c));
-            propNames.AddRange(GetProps(c));
+            propNames.AddRange(GetFields(c.GetType()));
+            propNames.AddRange(GetProps(c.GetType()));
 
             if (varIndex > propNames.Count)
             {
@@ -126,16 +126,16 @@ public class DisplayObjEditor : Editor
 
             List<string> subPropNames = new List<string>();
 
-            object subObj = null;
+            Type subObj = null;
 
             //need to support if prop/field is null. make an instance?
             if(DisplayObjVal.isProperty(propNames[varIndex]))
             {
-                subObj = c.GetType().GetProperty(propNames[varIndex].Substring(2)).GetValue(c);
+                subObj = c.GetType().GetProperty(propNames[varIndex].Substring(2)).PropertyType;
             }
             else
             {
-                subObj = c.GetType().GetField(propNames[varIndex].Substring(2)).GetValue(c);
+                subObj = c.GetType().GetField(propNames[varIndex].Substring(2)).FieldType;
             }
 
             subPropNames.Add("None");
@@ -149,14 +149,12 @@ public class DisplayObjEditor : Editor
             if (subPropNames.Count > 1)
             {
                 EditorGUILayout.LabelField("Sub Property:");
+                if (subVarIndex > subPropNames.Count) { subVarIndex = 0; }
                 subVarIndex = EditorGUILayout.Popup(subVarIndex, subPropNames.ToArray());
 
+                
                 selSubVar.stringValue = subPropNames[subVarIndex];
                 subVarIdx.intValue = subVarIndex;
-            }
-            else
-            {
-                EditorGUILayout.LabelField($"SubProperty: {selSubVar.stringValue}");
             }
 
             selComp.objectReferenceValue = comps[compIndex];
