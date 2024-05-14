@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace EUI
@@ -65,15 +66,23 @@ namespace EUI
                 if (varType == "p-")
                 {
                     //varName = selComp.GetType().GetProperty(varName).Name;
-                    obj = selComp.GetType().GetProperty(varName).GetValue(selComp);
+                    PropertyInfo p = selComp.GetType().GetProperty(varName);
+                    if(p != null)
+                    {
+                        obj = selComp.GetType().GetProperty(varName).GetValue(selComp);
+                    }
                 }
                 else if (varType == "f-")
                 {
                     //varName = selComp.GetType().GetField(varName).Name;
-                    obj = selComp.GetType().GetField(varName).GetValue(selComp);
+                    FieldInfo f = selComp.GetType().GetField(varName);
+                    if(f!=null)
+                    {
+                        obj = selComp.GetType().GetField(varName).GetValue(selComp);
+                    }
                 }
 
-                if (selSubVar != "")
+                if (selSubVar != "" && selSubVar != "None")
                 {
                     string subVarType = selSubVar.Substring(0, 2);
                     string subVarName = selSubVar.Substring(2);

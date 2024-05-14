@@ -22,6 +22,22 @@ public class DisplayObjVal : MonoBehaviour
         }
     }
 
+    public void SetTrackedObj(GameObject obj)
+    {
+        reference.objectToTrack = obj;
+        if (reference.selComp)
+        {
+            reference.selComp = obj.GetComponent(reference.compType);
+        }
+    }
+
+
+    private void OnValidate()
+    {
+        text = GetComponentInChildren<TextMeshProUGUI>();
+        Update();
+    }
+
     // Update is called once per frame
     void Update()
     {

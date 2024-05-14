@@ -181,8 +181,6 @@ public class DataRefEditor : PropertyDrawer
                 SerializedProperty selSubVar = property.FindPropertyRelative("selSubVar");
                 selSubVar.stringValue = evt.newValue;
                 selSubVar.serializedObject.ApplyModifiedProperties();
-
-                subPropSelect.index = 0;
             });
 
 
