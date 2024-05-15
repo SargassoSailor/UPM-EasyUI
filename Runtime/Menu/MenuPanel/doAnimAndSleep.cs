@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class doAnimAndSleep : MonoBehaviour
 {
-
+    public event Action onSleep;
     public string animTrigger;
     public Animator anim;
 
@@ -38,6 +39,10 @@ public class doAnimAndSleep : MonoBehaviour
 
     public void sleepAfterDelay()
     {
+        if(onSleep!= null)
+        {
+            onSleep.Invoke();
+        }
         Debug.Log(name + "going to sleep");
         gameObject.SetActive(false);
     }

@@ -6,25 +6,28 @@ using UnityEngine.Audio;
 using EUI;
 using UnityEngine.InputSystem;
 
-public class SimplePause : MonoBehaviour
+namespace EUI
 {
-    private bool isPaused;								//Boolean to check if the game is paused or not
-    public string pausePanelName = "PausePanel";
-    public bool showMenuWhenPaused = true;
-#if NEW_INPUT
-    public InputAction pauseKeybinds;
-#endif
-    private void Start()
-    {
-#if NEW_INPUT
-        pauseKeybinds.Enable();
-        pauseKeybinds.performed += DoPause;
-#endif
-    }
 
-    // Update is called once per frame
-    void Update()
+    public class SimplePause : MonoBehaviour
     {
+        private bool isPaused;                              //Boolean to check if the game is paused or not
+        public string pausePanelName = "PausePanel";
+        public bool showMenuWhenPaused = true;
+#if NEW_INPUT
+        public InputAction pauseKeybinds;
+#endif
+        private void Start()
+        {
+#if NEW_INPUT
+            pauseKeybinds.Enable();
+            pauseKeybinds.performed += DoPause;
+#endif
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
 #if !NEW_INPUT
         //InputSystem.
         //Check if the Cancel button in Input Manager is down this frame (default is Escape key) and that game is not paused, and that we're not in main menu
@@ -40,26 +43,28 @@ public class SimplePause : MonoBehaviour
             UnPause();
         }
 #endif
-    }
-#if NEW_INPUT
-    public void DoPause(InputAction.CallbackContext inp)
-    {
-         DoPause(!isPaused);
-    }
-#endif
-    public void DoPause(bool pause = true)
-    {
-        bool pauseCompleted = GameMGR.SetPause(pause);
-        isPaused = pause;
-        if (showMenuWhenPaused && pauseCompleted)
-        {
-            MenuManager.setPanel(pausePanelName, pause);
         }
-    }
+#if NEW_INPUT
+        public void DoPause(InputAction.CallbackContext inp)
+        {
+            DoPause(!isPaused);
+        }
+#endif
+        public void DoPause(bool pause = true)
+        {
+            bool pauseCompleted = GameMGR.SetPause(pause);
+            isPaused = pause;
+            if (showMenuWhenPaused && pauseCompleted)
+            {
+                MenuManager.setPanel(pausePanelName, pause);
+            }
+        }
 
-    public void UnPause()
-    {
-        DoPause(false);
+        public void UnPause()
+        {
+            DoPause(false);
+        }
+
     }
 
 }

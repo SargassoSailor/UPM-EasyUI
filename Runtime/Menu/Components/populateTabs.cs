@@ -147,6 +147,7 @@ public class populateTabs : MonoBehaviour
             if (!b.startSelected) { tabPanel.SetActive(false); }
             Toggle tog = createTabButton(b, tabButtonPrefab, tabContainer, tabPanel, contentContainer);
             if (b.startSelected) { tog.isOn = true; }
+            tabPanel.hideFlags = HideFlags.DontSaveInEditor;
         }
     }
 }

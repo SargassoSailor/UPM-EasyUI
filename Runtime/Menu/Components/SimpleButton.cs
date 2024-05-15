@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SimpleButton : MonoBehaviour
+namespace EUI
 {
-    public ButtonProps settings;
-    void Start()
+    public class SimpleButton : MonoBehaviour
     {
-        Button b = GetComponent<Button>();
-        settings.InitButton(b);
+        public ButtonProps settings;
+        void Start()
+        {
+            Button b = GetComponent<Button>();
+            settings.InitButton(b);
+        }
     }
 }

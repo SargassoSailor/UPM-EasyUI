@@ -154,6 +154,7 @@ public class populateButtons : populateItems
         foreach (ButtonProps b in props)
         {
             Button btn = createButton(b, prefab, true, layoutGroup);
+            btn.hideFlags = HideFlags.DontSaveInEditor;
             if (!selected)
             {
                 btn.Select();

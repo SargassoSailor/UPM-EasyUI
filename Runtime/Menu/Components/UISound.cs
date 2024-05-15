@@ -1,30 +1,34 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UISound : MonoBehaviour
+namespace EUI
 {
-    [Header("Sound Clip")]
-    public ProjectSoundClip soundClip;
-
-    // Use this for initialization
-    void Start()
+    public class UISoundOnClick : MonoBehaviour
     {
-        Toggle t = GetComponent<Toggle>();
-        if (t != null)
+        [Header("Sound Clip")]
+        public ProjectSoundClip soundClip;
+
+        // Use this for initialization
+        void Start()
         {
-            t.onValueChanged.AddListener(delegate { PlaySound(); });
+            Toggle t = GetComponent<Toggle>();
+            if (t != null)
+            {
+                t.onValueChanged.AddListener(delegate { PlaySound(); });
+            }
+
+            Button b = GetComponent<Button>();
+            if (b != null)
+            {
+                b.onClick.AddListener(() => PlaySound());
+            }
         }
 
-        Button b = GetComponent<Button>();
-        if (b != null)
+        public void PlaySound()
         {
-            b.onClick.AddListener(() => PlaySound());
+            ProjectSettings.data.PlaySoundClip(soundClip);
         }
-    }
 
-    public void PlaySound()
-    {
-        ProjectSettings.data.PlaySoundClip(soundClip);
     }
-
 }
+

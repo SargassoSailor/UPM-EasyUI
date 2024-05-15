@@ -1,0 +1,18 @@
+EasyUI Has the following components:
+
+Value Display:
+-DisplayObjVal: (Custom Editor) Display the value of any variable in a gameobjects components.
+-DisplayGameModuleVals: (Custom Editor) Display value of any variable in a game module. (deprecate?)
+-DisplayProjVal: (Deprecated) Display value from project (requires naming the var)
+
+Gameplay:
+-SimplePause - Works with gameManager. Sets GameMGR pause and uses either old or new input system.
+
+UI Setup:
+-populateButtons : Automatically generates group of buttons based on properties. There are some premade setups(Go Back,StartGame,StopGame,Exit,Continue,SetPref,ChangeMenu,OpenWebsite), and lets you set custom events for each button from one place. Alsop plays a sound on click.
+-populateItems : base class for populate components
+-populateSettings: Generates settings controls - not sure if this is complete or not
+-populateTabs: Generates tab buttons and tab contents from prefabs.
+-SimpleButton: Uses buttonProps and InitButton to setup events for a custom button (exit button w/sound, etc)
+-UISound: Alternate approach - Add this to a Button or a Toggle game object and itll play the sound when the UI object is clicked
+

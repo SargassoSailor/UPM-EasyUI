@@ -82,7 +82,7 @@ public class populateSettings : populateItems
         GameObject obj = Instantiate(prefab, layoutGroup.transform);
         obj.transform.parent = layoutGroup.transform;
         obj.name = props.name;
-
+        obj.hideFlags = HideFlags.DontSaveInEditor;
         props.InitItem(obj);
         return obj;
     }
