@@ -130,6 +130,10 @@ public class DataRefEditor : PropertyDrawer
                 compNames.Add(comp.GetType().ToString());
             }
             var componentSelect = ShowVEPopup("Component", "compIdx", compNames);
+            if(componentSelect.index > comps.Length || componentSelect.index == -1)
+            {
+                componentSelect.index = 0;
+            }
             Component c = comps[componentSelect.index];
 
             propNames = PopulateFields(c.GetType());

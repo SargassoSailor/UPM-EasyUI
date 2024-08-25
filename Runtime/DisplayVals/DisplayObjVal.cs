@@ -47,7 +47,7 @@ public class DisplayObjVal : MonoBehaviour
         //why is this not saving
         //text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
         string label = "";
-        //if (showLabel) { label = varName + ":"; }
+       // if (showLabel) { label = reference.GetType( + ":"; }
             
         text.text = $"{label}{val}";
         

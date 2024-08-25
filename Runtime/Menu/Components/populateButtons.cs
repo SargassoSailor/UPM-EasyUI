@@ -136,7 +136,7 @@ public class populateButtons : populateItems
             obj = Instantiate(buttonObj, layoutGroup.transform);
             obj.transform.parent = layoutGroup.transform;
             obj.name = props.name;
-
+            obj.hideFlags = HideFlags.HideAndDontSave;
         }
         Button button = obj.GetComponent<Button>();
         //button.Select();
@@ -154,7 +154,7 @@ public class populateButtons : populateItems
         foreach (ButtonProps b in props)
         {
             Button btn = createButton(b, prefab, true, layoutGroup);
-            btn.hideFlags = HideFlags.DontSaveInEditor;
+            
             if (!selected)
             {
                 btn.Select();
