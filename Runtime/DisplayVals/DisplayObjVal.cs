@@ -12,6 +12,8 @@ public class DisplayObjVal : MonoBehaviour
     public bool showLabel = false;
     [Space]
     public DataRef reference = new DataRef();
+
+    public float updateDelay = 0.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,11 @@ public class DisplayObjVal : MonoBehaviour
         {
             reference.compType = reference.selComp.GetType();
         }
+        if(updateDelay > 0)
+        {
+            InvokeRepeating("updateVals", updateDelay, updateDelay);
+        }
+        updateVals();
     }
 
     public void SetTrackedObj(GameObject obj)
@@ -29,8 +36,22 @@ public class DisplayObjVal : MonoBehaviour
         {
             reference.selComp = obj.GetComponent(reference.compType);
         }
+        updateVals();
     }
 
+
+    void updateVals()
+    {
+        string val = reference.GetValue();
+
+        //get field for variables?
+        //why is this not saving
+        //text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
+        string label = "";
+        // if (showLabel) { label = reference.GetType( + ":"; }
+
+        text.text = $"{label}{val}";
+    }
 
     private void OnValidate()
     {
@@ -41,15 +62,9 @@ public class DisplayObjVal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string val = reference.GetValue();
-
-        //get field for variables?
-        //why is this not saving
-        //text.text = selComp.GetType().GetProperty(selVar).GetValue(selComp).ToString();
-        string label = "";
-       // if (showLabel) { label = reference.GetType( + ":"; }
-            
-        text.text = $"{label}{val}";
-        
+        if(updateDelay == 0)
+        {
+            updateVals();
+        }
     }
 }

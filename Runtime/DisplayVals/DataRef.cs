@@ -88,19 +88,26 @@ namespace EUI
                     string subVarName = selSubVar.Substring(2);
                     varName += $".{subVarName}";
 
-                    object subObj = null;
-                    if (subVarType == "p-")
+                    try
                     {
-                        //varName = selComp.GetType().GetProperty(varName).Name;
-                        subObj = obj.GetType().GetProperty(subVarName).GetValue(obj);
+                        object subObj = null;
+                        if (subVarType == "p-")
+                        {
+                            //varName = selComp.GetType().GetProperty(varName).Name;
+                            subObj = obj.GetType().GetProperty(subVarName).GetValue(obj);
+                        }
+                        else if (subVarType == "f-")
+                        {
+                            //varName = selComp.GetType().GetField(varName).Name;
+                            subObj = obj.GetType().GetField(subVarName).GetValue(obj);
+                        }
+                        if (subObj != null) { val = subObj.ToString(); }
                     }
-                    else if (subVarType == "f-")
+                    catch(Exception e) 
                     {
-                        //varName = selComp.GetType().GetField(varName).Name;
-                        subObj = obj.GetType().GetField(subVarName).GetValue(obj);
+                        Debug.LogError($"Could not print {obj}.{subVarName}");
+                        return "";
                     }
-
-                    if (subObj != null) { val = subObj.ToString(); }
 
                 }
                 else
