@@ -101,7 +101,20 @@ namespace EUI
                             //varName = selComp.GetType().GetField(varName).Name;
                             subObj = obj.GetType().GetField(subVarName).GetValue(obj);
                         }
-                        if (subObj != null) { val = subObj.ToString(); }
+                        if (subObj != null) 
+                        { 
+                            Type t = obj.GetType();
+                            if(t == typeof(float))
+                            {
+                                float f = (float)subObj;
+                                val = f.ToString("N2");
+                            }
+                            else
+                            {
+                                val = subObj.ToString();
+                            }
+                            
+                        }
                     }
                     catch(Exception e) 
                     {
