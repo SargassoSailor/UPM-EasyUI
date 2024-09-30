@@ -8,7 +8,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework.Internal;
 using System.Linq;
-
+/*
 [CustomEditor(typeof(DisplayGameModuleVals))]
 [CanEditMultipleObjects]
 public class DisplayModuleEditor : Editor
@@ -49,4 +49,4 @@ public class DisplayModuleEditor : Editor
 
         serializedObject.ApplyModifiedProperties();
     }
-}
+}*/

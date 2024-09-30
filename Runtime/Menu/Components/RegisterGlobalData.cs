@@ -12,6 +12,8 @@ public static class DataRegister
     public static Dictionary<string, PopulateOptionsAction> itemList = new Dictionary<string, PopulateOptionsAction>();
     public static Dictionary<string, string> itemListByCategory = new Dictionary<string, string>();
 
+    public static Dictionary<Type,List<string>> itemTypeList = new Dictionary<Type, List<string>>();
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void Init()
     {
@@ -27,6 +29,23 @@ public static class DataRegister
     public static void AddData(string name, PopulateOptionsAction option)
     {
         bool result = itemList.TryAdd(name.ToLower(), option);
+    }
+
+    public static void AddTypeData(Type t, List<string> options)
+    {
+        bool result = itemTypeList.TryAdd(t, options);
+    }
+
+    public static List<string> GetTypeOptions(Type t)
+    {
+        bool result = itemTypeList.TryGetValue(t, out List<string> options);
+
+        return options;
+    }
+
+    public static List<string> GetAllTypeOptionNames()
+    {
+        return itemList.Keys.ToList();
     }
 
     public static PopulateOptionsAction GetData(string name)
