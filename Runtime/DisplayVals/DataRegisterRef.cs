@@ -14,13 +14,19 @@ namespace EUI
         public int registryListIdx = 0;
         public int registryEntryIdx = 0;
 
+        public string ValueName { get { return DataRegister.GetTypeOptions(type)[registryEntryIdx]; } }
+
         [SerializeField]
-        public Type type;
+        public string type;
         public DataRegisterRef(string regListName = "")
         {
             this.registryListName = regListName;
         }
 
+        public DataRegisterRef(Type boundType)
+        {
+            this.type = boundType.ToString();
+        }
 
         public void SetTrackedObj(GameObject obj)
         {

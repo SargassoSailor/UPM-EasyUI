@@ -12,7 +12,7 @@ public static class DataRegister
     public static Dictionary<string, PopulateOptionsAction> itemList = new Dictionary<string, PopulateOptionsAction>();
     public static Dictionary<string, string> itemListByCategory = new Dictionary<string, string>();
 
-    public static Dictionary<Type,List<string>> itemTypeList = new Dictionary<Type, List<string>>();
+    public static Dictionary<string,List<string>> itemTypeList = new Dictionary<string, List<string>>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void Init()
@@ -33,10 +33,10 @@ public static class DataRegister
 
     public static void AddTypeData(Type t, List<string> options)
     {
-        bool result = itemTypeList.TryAdd(t, options);
+        bool result = itemTypeList.TryAdd(t.ToString(), options);
     }
 
-    public static List<string> GetTypeOptions(Type t)
+    public static List<string> GetTypeOptions(string t)
     {
         bool result = itemTypeList.TryGetValue(t, out List<string> options);
 

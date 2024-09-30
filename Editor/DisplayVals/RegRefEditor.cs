@@ -115,6 +115,7 @@ public class RegRefEditor : PropertyDrawer
         int listIdx = property.FindPropertyRelative("registryListIdx").intValue;
         int entryIdx = property.FindPropertyRelative("registryEntryIdx").intValue;
 
+        String type = property.FindPropertyRelative("type").stringValue;
         DataRegisterRef refObj = property.boxedValue as DataRegisterRef;
 
         //container.Add(label);
@@ -126,10 +127,10 @@ public class RegRefEditor : PropertyDrawer
         //container.Add(listSelect);
 
         //if(listIdx < listOptions.Count)
-        if(listName != "")
+        if(type != null)
         {
             //List<string> entryOptions = DataRegister.GetFullOptions(listOptions[listIdx]);
-            List<string> entryOptions = DataRegister.GetFullOptions(listName);
+            List<string> entryOptions = DataRegister.GetTypeOptions(refObj.type);
             DropdownField entrySelect = ShowVEPopup(property.name, "registryEntryIdx", entryOptions);
             container.Add(entrySelect);
         }
