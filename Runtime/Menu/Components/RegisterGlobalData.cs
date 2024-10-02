@@ -13,6 +13,7 @@ public static class DataRegister
     public static Dictionary<string, string> itemListByCategory = new Dictionary<string, string>();
 
     public static Dictionary<string,List<string>> itemTypeList = new Dictionary<string, List<string>>();
+    public static Dictionary<string,List<object>> itemTypeValues = new Dictionary<string, List<object>>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
     public static void Init()
@@ -41,6 +42,29 @@ public static class DataRegister
         bool result = itemTypeList.TryGetValue(t, out List<string> options);
 
         return options;
+    }
+
+    public static object GetTypeValue(string t, int entryIdx)
+    {
+        bool foundList = itemTypeList.TryGetValue(t, out List<string> entries);
+        if (!foundList)
+        {
+            Debug.LogError($"No entry found for list {t}");
+            return null;
+        }
+        //int idx = entries.FindIndex(x => x == entry);
+        if (entryIdx == -1)
+        {
+            Debug.LogError($"No entry found for ENTRY {entryIdx}");
+            return null;
+        }
+
+        return itemTypeValues[t][entryIdx];
+    }
+
+    public static void AddTypeValues(Type t, List<object> data)
+    {
+        bool result = itemTypeValues.TryAdd(t.ToString(), data);
     }
 
     public static List<string> GetAllTypeOptionNames()

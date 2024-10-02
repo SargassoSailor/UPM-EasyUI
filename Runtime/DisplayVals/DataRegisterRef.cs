@@ -15,13 +15,10 @@ namespace EUI
         public int registryEntryIdx = 0;
 
         public string ValueName { get { return DataRegister.GetTypeOptions(type)[registryEntryIdx]; } }
+        public object Value { get { return DataRegister.GetTypeValue(type, registryEntryIdx); } }
 
-        [SerializeField]
-        public string type;
-        public DataRegisterRef(string regListName = "")
-        {
-            this.registryListName = regListName;
-        }
+        [field: SerializeField] public string type;
+
 
         public DataRegisterRef(Type boundType)
         {

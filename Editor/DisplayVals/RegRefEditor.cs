@@ -115,9 +115,10 @@ public class RegRefEditor : PropertyDrawer
         int listIdx = property.FindPropertyRelative("registryListIdx").intValue;
         int entryIdx = property.FindPropertyRelative("registryEntryIdx").intValue;
 
-        String type = property.FindPropertyRelative("type").stringValue;
+        string type = property.FindPropertyRelative("type").stringValue;
         DataRegisterRef refObj = property.boxedValue as DataRegisterRef;
 
+        Debug.Log($"{type}-{refObj.type}");
         //container.Add(label);
 
         List<string> listOptions = DataRegister.GetAllTypeOptionNames();
@@ -127,7 +128,7 @@ public class RegRefEditor : PropertyDrawer
         //container.Add(listSelect);
 
         //if(listIdx < listOptions.Count)
-        if(type != null)
+        if(type != "")
         {
             //List<string> entryOptions = DataRegister.GetFullOptions(listOptions[listIdx]);
             List<string> entryOptions = DataRegister.GetTypeOptions(refObj.type);
