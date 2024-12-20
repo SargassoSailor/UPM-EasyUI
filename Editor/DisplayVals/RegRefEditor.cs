@@ -104,6 +104,7 @@ public class RegRefEditor : PropertyDrawer
 
     public override VisualElement CreatePropertyGUI(SerializedProperty property)
     {
+        Debug.Log("Creating Property");
         prop = property;
         var container = new VisualElement();
 

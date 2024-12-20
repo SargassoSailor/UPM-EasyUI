@@ -28,7 +28,20 @@ namespace EUI
 
         public int subVarIdx;
 
+        public bool objRefIsPlaceholder = false;
+
         public DataRef() { }
+
+        public void CheckObj()
+        {
+            if (objectToTrack != null && objRefIsPlaceholder)
+            {
+                if(selComp ==null)
+                {
+                    selComp = (Component)Transform.FindAnyObjectByType(compType);
+                }
+            }
+        }
 
         public void SetTrackedObj(GameObject obj)
         {
@@ -128,6 +141,10 @@ namespace EUI
                     if (obj != null) { val = obj.ToString(); }
                 }
                 return val;
+            }
+            else if(selComp==null)
+            {
+                CheckObj();
             }
             return "";
         }

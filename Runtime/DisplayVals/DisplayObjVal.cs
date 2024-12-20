@@ -14,9 +14,12 @@ public class DisplayObjVal : MonoBehaviour
     public DataRef reference = new DataRef();
 
     public float updateDelay = 0.5f;
+    [Tooltip("This object is a placeholder to select fields. It will be removed, and if so the script will look for the next instance")]
+    public bool objIsPlaceholder = false;
     // Start is called before the first frame update
     void Start()
     {
+        reference.objRefIsPlaceholder = objIsPlaceholder;
         text = GetComponentInChildren<TextMeshProUGUI>();
         if(reference.selComp)
         {
